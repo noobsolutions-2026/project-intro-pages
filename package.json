@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "description": "Spec-driven generator and agents for GitHub Pages project intros",
   "scripts": {
-    "generate": "node scripts/generate_intro.js specs/example_project.spec.yaml",
-    "generate:all": "node scripts/generate_all.js",
-    "design": "node scripts/design_page_clean.js",
+    "generate": "echo \"Automation disabled. Copy docs/templates/sample-page.html to docs/<your-id>.html and edit.\"",
+    "generate:all": "echo \"Automation disabled. Use docs/templates/index-template.html to create docs/index.html manually.\"",
+    "design": "echo \"Design automation disabled. Edit docs/assets/style.css or provide your own CSS.\"",
     "test": "bash scripts/test_page.sh"
   },
   "dependencies": {

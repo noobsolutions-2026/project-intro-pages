@@ -16,7 +16,5 @@ features:
 usage: |
   See the project's README for setup and deployment instructions. For local development:
   install dependencies, populate environment (.env) and run the dev server on port 3000.
-links:
-  Repo: ''
-  Docs: ''
+# links: (removed empty placeholders)
 cta: "Try the local dev setup or review deployment docs"

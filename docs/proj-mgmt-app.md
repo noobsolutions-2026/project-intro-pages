@@ -21,10 +21,5 @@ See the project's README for setup and deployment instructions. For local develo
 install dependencies, populate environment (.env) and run the dev server on port 3000.
 
 
-## Links
-
-- **Repo**: 
-- **Docs**: 
-
 **Call to action:** Try the local dev setup or review deployment docs
 

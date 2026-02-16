@@ -1,98 +1,126 @@
 # project-intro-pages
-Repository to host GitHub Pages sites that introduce selected projects. This repo uses a
-spec-driven workflow and lightweight agents to generate, design, test, and deploy intro pages.
-# project-intro-pages
-Repository to host GitHub Pages sites that introduce selected projects. This repo uses a
-spec-driven workflow and lightweight agents to generate, design, test, and deploy intro pages.
 
-Quick start (local)
+Repository to host GitHub Pages sites that introduce selected projects. This repo uses **simple HTML templates** that you edit manually or provide to an LLM for generation.
 
-- Install dependencies:
+## Quick Start (Local)
+
+### Install dependencies:
 
 ```bash
 cd github/noobsolutions.2026_gmail.com/project-intro-pages
 npm install
 ```
 
-# project-intro-pages
-Repository to host GitHub Pages sites that introduce selected projects. This repo uses a
-spec-driven workflow and lightweight agents to generate, design, test, and deploy intro pages.
-
-Quick start (local)
-
-- Install dependencies:
+### Create a project page (manual):
 
 ```bash
-cd github/noobsolutions.2026_gmail.com/project-intro-pages
-npm install
+# Copy the sample template
+cp docs/templates/sample-page.html docs/my-project-id.html
+
+# Edit in your editor and save
+# Then test locally:
+npx http-server docs -p 8000
 ```
 
-- Generate pages from specs:
+### Create a project page (using an LLM):
 
-```bash
-# generate the example page
-npm run generate
+1. Read the LLM prompt guide: `docs/templates/LLM_PROMPT.md`
+2. Copy the template file contents (`docs/templates/sample-page.html`) into your LLM prompt.
+3. Provide your project details (name, intent, summary, features, links).
+4. Paste the LLM output to `docs/<your-id>.html`.
 
-# generate all specs and rebuild index/assets
-npm run generate:all
-
-# run the design step (writes docs/assets/style.css)
-npm run design
-```
-
-- Run tests:
+### Run tests:
 
 ```bash
 npm test
 ```
 
-Local preview
+## Local Preview
 
-- Quick preview: open generated HTML in browser:
+Serve the `docs/` folder on a local port:
 
 ```bash
-# serve the docs/ folder on port 8000
 npx http-server docs -p 8000
-# then open http://localhost:8000/ or http://localhost:8000/proj-mgmt-app.html
 ```
 
-Generate a page for a targeted project
+## Template-Based Workflow
 
-1. Create a spec from an existing project README (automated):
+This repository intentionally **does not auto-generate** pages. Instead, you:
 
-```bash
-# example: produce specs/proj-mgmt-app.spec.yaml from the project folder
-node scripts/spec_from_project.js /Users/work/00_workdir/00_coderepo/github/noobsolutions.2026_gmail.com/web-app/proj-mgmt-app
+1. **Copy a template** (`sample-page.html` or `index-template.html`)
+2. **Edit manually** or **use an LLM** to populate the placeholders
+3. **Save the HTML** to `docs/`
+4. **Test locally**, then commit and push
+
+## Manual Maintenance Steps
+
+1. Copy `docs/templates/sample-page.html` to `docs/<your-id>.html`
+2. Edit placeholders:
+   - `{{PROJECT_NAME}}` → your project name
+   - `{{INTENT}}` → one-line elevator pitch
+   - `{{SUMMARY}}` → brief description
+   - `{{FEATURES}}` → key features (as `<li>` items)
+   - `{{LINKS}}` → optional links
+   - `{{CTA_TEXT}}` and `{{CTA_URL}}` → call-to-action (optional)
+3. Test: `npx http-server docs -p 8000`
+
+## Creating an Index Page
+
+Copy and customize `docs/templates/index-template.html` to `docs/index.html`:
+- Update project cards to link to your pages
+- Edit the header text
+
+## LLM Prompt Guide
+
+See [docs/templates/LLM_PROMPT.md](docs/templates/LLM_PROMPT.md) for detailed guidance on prompting LLMs to generate pages, including example prompts and troubleshooting.
+
+## Design and Styling
+
+- Edit `docs/assets/style.css` to customize globally
+- Or replace the stylesheet link in individual pages with your own CSS
+
+## Deployment
+
+GitHub Actions workflows:
+- **ci.yml** — Run tests when `docs/` changes
+- **deploy-pages.yml** — Publish `docs/` to GitHub Pages on push to `main`
+
+## Project Structure
+
+```
+project-intro-pages/
+├── docs/
+│   ├── assets/style.css       # Shared stylesheet
+│   ├── templates/
+│   │   ├── sample-page.html   # Project page template
+│   │   ├── index-template.html # Landing page template
+│   │   ├── README.md          # Template guide
+│   │   └── LLM_PROMPT.md      # LLM generation guide
+│   └── <your-project>.html    # Your pages
+├── scripts/
+│   ├── test_page.sh           # Test runner
+│   └── disabled/              # Archived automation scripts
+├── .github/workflows/
+│   ├── ci.yml                 # Run tests
+│   └── deploy-pages.yml       # Deploy to GitHub Pages
+├── package.json
+└── README.md
 ```
 
-2. Run the generator against the produced spec (or run `npm run generate` to run the example):
+## Key Files
 
-```bash
-node scripts/generate_intro.js specs/proj-mgmt-app.spec.yaml
-```
+- [docs/templates/LLM_PROMPT.md](docs/templates/LLM_PROMPT.md) — How to prompt LLMs to generate pages
+- [docs/templates/sample-page.html](docs/templates/sample-page.html) — HTML template for project pages
+- [docs/templates/index-template.html](docs/templates/index-template.html) — HTML template for landing page
 
-Notes on design and styling
+## Contributing
 
-- The designer agent (`node scripts/design_page.js`) writes a shared stylesheet at `docs/assets/style.css`.
-- `generate_index.js` and `generate_intro.js` reference the shared `docs/assets/style.css` so the
-	landing page and project pages use the same modern dark SaaS styling.
+1. Copy `docs/templates/sample-page.html` to `docs/<project-id>.html`
+2. Edit manually or use an LLM
+3. Test locally: `npx http-server docs -p 8000`
+4. Add a card to `docs/index.html`
+5. Commit and push to `main` — GitHub Actions will publish to GitHub Pages
 
-Deployment
+---
 
-This repository includes a GitHub Actions workflow that builds and publishes `docs/` to the
-`gh-pages` branch (`.github/workflows/deploy-pages.yml`). To publish from CI, ensure the
-repository secrets include `ACTIONS_DEPLOY_KEY` or `GITHUB_TOKEN` as configured in the workflow.
-
-Useful files
-
-- `SPEC.md` — spec format and guidance
-- `specs/` — YAML project specs (add your project specs here)
-- `agents/agents.yaml` — agent definitions and CLI hooks
-- `scripts/` — generator, design, test, deploy, and spec extraction helpers
-- `docs/` — generated Pages content (site source)
-- `.github/workflows/` — CI to generate, test, and publish
-
-Contributing
-
-Edit or add YAML under `specs/` and run `npm run generate` or `npm run generate:all` to produce new docs. CI can
-automatically publish to GitHub Pages via the included workflow.
+For questions, open an issue or submit a pull request.

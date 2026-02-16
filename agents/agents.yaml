@@ -15,7 +15,7 @@ agents:
 
   - id: designer
     purpose: "Design the page layout and produce shared CSS used by index and project pages."
-    entrypoint: "node scripts/design_page_clean.js"
+    entrypoint: "node scripts/design_page.js"
     responsibilities:
       - produce `docs/assets/style.css` (shared styles for index and project pages)
       - provide templates or CSS variants for landing and project detail pages

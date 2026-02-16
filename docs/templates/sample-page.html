@@ -1,0 +1,75 @@
+<!doctype html>
+<!--
+  Sample project page template (LLM-friendly comments included).
+
+  How to use (human):
+    1) Copy this file to `docs/<your-id>.html`:
+         cp docs/templates/sample-page.html docs/my-project-id.html
+    2) Open `docs/my-project-id.html` and replace the placeholders below.
+    3) Ensure `docs/assets/style.css` exists (or update the <link> href to your CSS).
+
+  How to use (for an LLM):
+    - Replace the placeholder tokens between double curly braces with project values:
+        {{PROJECT_ID}}       => filesystem-safe id used for filename (e.g. my-project-id)
+        {{PROJECT_NAME}}     => human-friendly project name
+        {{INTENT}}           => one-line project intent or elevator pitch
+        {{SUMMARY}}          => short summary paragraph
+        {{FEATURES}}         => an HTML list (<li>) of key features
+        {{CTA_TEXT}}         => call-to-action label (optional)
+        {{CTA_URL}}          => call-to-action URL (optional)
+    - Output must be valid HTML. Do not include surrounding markdown or fenced blocks.
+
+  Example (LLM prompt):
+    "Generate an HTML project page by replacing the tokens in docs/templates/sample-page.html
+     with values: PROJECT_ID=my-project, PROJECT_NAME=My Project, INTENT='Do X', SUMMARY='...',
+     FEATURES=['Feature A','Feature B'], CTA_TEXT='Get started', CTA_URL='/start'."
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="project-intro-pages template">
+    <title>{{PROJECT_NAME}} — Short intro</title>
+    <!-- Update href if you store CSS elsewhere -->
+    <link rel="stylesheet" href="./assets/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <!-- Logo: short text/icon for the project -->
+        <div class="logo">{{PROJECT_SHORT}}</div>
+        <div>
+          <h1>{{PROJECT_NAME}}</h1>
+          <div class="intent">{{INTENT}}</div>
+        </div>
+      </header>
+
+      <section class="card">
+        <!-- Summary: short HTML paragraph -->
+        <p class="summary">{{SUMMARY}}</p>
+
+        <!-- Features: replace with <li> elements. Example below retained for manual edit. -->
+        <h3>Key features</h3>
+        <ul class="features">
+          <!-- LLMs: when populating, output only <li> elements here, e.g. -->
+          <!-- <li>Feature A</li><li>Feature B</li> -->
+          {{FEATURES}}
+        </ul>
+
+        <!-- Optional links / notes -->
+        <div class="small">
+          <!-- Example: <a href="https://github.com/org/repo">Repository</a> -->
+          {{LINKS}}
+        </div>
+
+        <!-- Call to action (optional) -->
+        <p>
+          <!-- LLMs: if CTA_TEXT provided, include an anchor; otherwise omit. -->
+          {{#if CTA_TEXT}}<a class="cta" href="{{CTA_URL}}">{{CTA_TEXT}}</a>{{/if}}
+        </p>
+      </section>
+
+      <footer class="footer">Copy and edit <em>docs/templates/sample-page.html</em> to create your project page.</footer>
+    </div>
+  </body>
+</html>

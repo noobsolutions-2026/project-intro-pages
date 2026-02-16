@@ -1,0 +1,14 @@
+name: Archive (manual docs workflow - no automation)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Info
+        run: |
+          echo "This workflow is archived."
+          echo "Docs are now maintained manually using templates."
+          echo "See: docs/templates/README.md and docs/templates/LLM_PROMPT.md"
