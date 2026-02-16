@@ -1,0 +1,14 @@
+{
+  "name": "project-intro-pages",
+  "version": "0.1.0",
+  "description": "Spec-driven generator and agents for GitHub Pages project intros",
+  "scripts": {
+    "generate": "node scripts/generate_intro.js specs/example_project.spec.yaml",
+    "generate:all": "node scripts/generate_all.js",
+    "design": "node scripts/design_page_clean.js",
+    "test": "bash scripts/test_page.sh"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}

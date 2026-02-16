@@ -1,0 +1,22 @@
+id: proj-mgmt-app
+name: Project Management Application
+intent: "Node.js web application with Microsoft Entra ID (Azure AD) authentication using OAuth 2.0 and OpenID Connect."
+audience: "developers, DevOps, security engineers"
+tone: technical
+summary: |
+  Project Management Application provides secure authentication via Microsoft Entra ID
+  with session-based user management. Secrets are stored in AWS SSM Parameter Store and the
+  app can be deployed containerized to AWS ECS/Fargate or run locally for development.
+features:
+  - Microsoft Entra ID (Azure AD) authentication with Passport.js
+  - Secrets in AWS SSM Parameter Store
+  - Containerized with Docker and deployable to ECS/Fargate
+  - Role-based access control backed by DynamoDB
+  - S3-backed file storage for project files
+usage: |
+  See the project's README for setup and deployment instructions. For local development:
+  install dependencies, populate environment (.env) and run the dev server on port 3000.
+links:
+  Repo: ''
+  Docs: ''
+cta: "Try the local dev setup or review deployment docs"

@@ -1,0 +1,26 @@
+name: CI - generate & test
+
+on:
+  push:
+    paths:
+      - 'specs/**'
+      - 'scripts/**'
+      - '.github/workflows/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install
+        run: npm ci
+      - name: Run generate and tests
+        run: |
+          npm run generate:all
+          npm test

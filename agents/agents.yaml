@@ -1,0 +1,30 @@
+# Agents definitions: responsibilities and simple CLI hooks
+
+agents:
+  - id: reader
+    purpose: "Read a target spec and produce an intro write-up (markdown)."
+    entrypoint: "node scripts/generate_intro.js <spec-path>"
+    responsibilities:
+      - parse spec
+      - produce `docs/<id>.md`
+      - update `docs/index.md` links
+
+  - id: marketer
+    purpose: "Expand intro into short marketing text and CTAs. Can be used by the reader agent as a mode."
+    entrypoint: "node scripts/generate_intro.js --marketing <spec-path>"
+
+  - id: designer
+    purpose: "Design the page layout and produce shared CSS used by index and project pages."
+    entrypoint: "node scripts/design_page_clean.js"
+    responsibilities:
+      - produce `docs/assets/style.css` (shared styles for index and project pages)
+      - provide templates or CSS variants for landing and project detail pages
+      - coordinate with `generate_index.js` for index layout
+
+  - id: tester
+    purpose: "Run tests that ensure generated pages are present, links resolve, and CI passes."
+    entrypoint: "bash scripts/test_page.sh"
+
+  - id: deployer
+    purpose: "Deploy or prepare the repo for GitHub Pages publishing (commit docs or push branch)."
+    entrypoint: "bash scripts/deploy_clean.sh"
