@@ -1,30 +1,15 @@
-# Agents definitions: responsibilities and simple CLI hooks
+# Agents definitions: ARCHIVED
+# This project now uses a template-based manual workflow instead of automated generation.
+# See docs/templates/README.md and docs/templates/LLM_PROMPT.md for the new workflow.
 
-agents:
-  - id: reader
-    purpose: "Read a target spec and produce an intro write-up (markdown)."
-    entrypoint: "node scripts/generate_intro.js <spec-path>"
-    responsibilities:
-      - parse spec
-      - produce `docs/<id>.md`
-      - update `docs/index.md` links
+# Previous agent definitions (archived for reference):
+# - reader: Used to auto-generate intro pages from specs (REPLACED by manual templates + LLM)
+# - marketer: Used to expand intros with marketing text (REPLACED by manual editing or LLM)
+# - designer: Used to auto-generate CSS (REPLACED by manual editing of docs/assets/style.css)
+# - tester: Validates that templates and tools are present (UPDATED in scripts/test_page.sh)
+# - deployer: Publishes to GitHub Pages via GitHub Actions (AUTOMATED in .github/workflows/)
 
-  - id: marketer
-    purpose: "Expand intro into short marketing text and CTAs. Can be used by the reader agent as a mode."
-    entrypoint: "node scripts/generate_intro.js --marketing <spec-path>"
-
-  - id: designer
-    purpose: "Design the page layout and produce shared CSS used by index and project pages."
-    entrypoint: "node scripts/design_page.js"
-    responsibilities:
-      - produce `docs/assets/style.css` (shared styles for index and project pages)
-      - provide templates or CSS variants for landing and project detail pages
-      - coordinate with `generate_index.js` for index layout
-
-  - id: tester
-    purpose: "Run tests that ensure generated pages are present, links resolve, and CI passes."
-    entrypoint: "bash scripts/test_page.sh"
-
-  - id: deployer
-    purpose: "Deploy or prepare the repo for GitHub Pages publishing (commit docs or push branch)."
-    entrypoint: "bash scripts/deploy_clean.sh"
+# Current workflow:
+# 1. Copy docs/templates/sample-page.html to docs/<project-id>.html
+# 2. Edit manually or use an LLM with docs/templates/LLM_PROMPT.md
+# 3. Commit to main → GitHub Actions publishes to gh-pages
