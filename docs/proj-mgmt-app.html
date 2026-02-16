@@ -5,22 +5,58 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Project Management Application</title>
   <link rel="stylesheet" href="./assets/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <header>
       <div class="logo">PI</div>
-      <div>
+      <div class="header-content">
         <h1>Project Management Application</h1>
-        <div class="intent">Node.js web application with Microsoft Entra ID (Azure AD) authentication using OAuth 2.0 and OpenID Connect.</div>
+        <p class="intent">Node.js web application with Microsoft Entra ID (Azure AD) authentication using OAuth 2.0 and OpenID Connect.</p>
       </div>
     </header>
-    <section class="card">
-      <div class="summary">Project Management Application provides secure authentication via Microsoft Entra ID<br>with session-based user management. Secrets are stored in AWS SSM Parameter Store and the<br>app can be deployed containerized to AWS ECS/Fargate or run locally for development.<br></div>
-      <ul class="features"><li>Microsoft Entra ID (Azure AD) authentication with Passport.js</li><li>Secrets in AWS SSM Parameter Store</li><li>Containerized with Docker and deployable to ECS/Fargate</li><li>Role-based access control backed by DynamoDB</li><li>S3-backed file storage for project files</li></ul>
-      
-      <a class="cta" href="#">Try the local dev setup or review deployment docs</a>
-    </section>
+    <main>
+      <section class="card">
+        <p class="summary">Project Management Application provides secure authentication via Microsoft Entra ID with session-based user management. Secrets are stored in AWS SSM Parameter Store and the app can be deployed containerized to AWS ECS/Fargate or run locally for development.</p>
+        <ul class="feature-list">
+          <li>Microsoft Entra ID (Azure AD) authentication with Passport.js</li>
+          <li>Secrets in AWS SSM Parameter Store</li>
+          <li>Containerized with Docker and deployable to ECS/Fargate</li>
+          <li>Role-based access control backed by DynamoDB</li>
+          <li>S3-backed file storage for project files</li>
+        </ul>
+        <div class="user-cases">
+          <h2>Key User Cases</h2>
+          <h3>1. Create Project</h3>
+          <p>Users can initiate new projects within the application. This involves defining project details such as name, description, timelines, and initial team members. Upon creation, a project serves as the central hub for all related tasks, assessments, and progress tracking.</p>
+          <h3>2. Assign Assessments</h3>
+          <p>Once a project is established, assessments can be assigned to individual team members or roles within that project. These assessments can be tasks, milestones, or specific deliverables. The system ensures that each assessment is linked to a project and assigned to a responsible party, facilitating clear ownership and progress monitoring.</p>
+          <h3>Relationship between Project Creation and Assessment Assignment</h3>
+          <p>The core workflow within the Project Management Application begins with the creation of a project. Only after a project is successfully set up can assessments be defined and assigned. This sequential relationship ensures that all work (assessments) is contextually tied to a larger objective (the project).</p>
+          <div class="flow-diagram">
+            <h3>Workflow Overview</h3>
+            <pre><code>
++-----------------+     +-----------------------+     +--------------------------+
+|  User Initiates |     |  Define Project       |     |  Project Created         |
+|  New Project    |----->  (Name, Desc, Team)   |----->  (Central Hub)             |
++-----------------+     +-----------------------+     +-----------+--------------+
+                                                                    |
+                                                                    |  Link
+                                                                    V
++-----------------+     +-----------------------+     +--------------------------+
+|  Define         |     |  Assign Assessment    |     |  Assessment Tracked      |
+|  Assessments    |----->  (To Team Member/Role)  |----->  (Within Project Context) |
++-----------------+     +-----------------------+     +--------------------------+
+            </code></pre>
+            <p><em>For a more detailed visual diagram, consider embedding an image here.</em></p>
+          </div>
+        </div>
+        <a class="cta-btn" href="#">Try the local dev setup or review deployment docs</a>
+      </section>
+    </main>
     <footer>Generated from <code>specs/proj-mgmt-app.spec.yaml</code></footer>
   </div>
 </body>
