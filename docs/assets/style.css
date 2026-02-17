@@ -63,12 +63,16 @@ header {
   padding: 80px 20px;
   margin-bottom: 40px;
   border-radius: 0 0 15px 15px;
+  display: flex; /* Explicitly set flex display */
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center items horizontally within the flex container */
 }
 
 .hero-section h1 {
   font-size: 48px;
   margin-bottom: 15px;
   font-weight: 700;
+  width: 100%;
 }
 
 .hero-section p {
@@ -76,6 +80,7 @@ header {
   max-width: 800px;
   margin: 0 auto;
   opacity: 0.9;
+  width: 100%;
 }
 
 /* Main Content Area for proj-mgmt-app.html */
@@ -335,5 +340,19 @@ footer { /* Used by proj-mgmt-app.html */
   .cta-btn, .card-cta-btn {
     padding: 12px 24px;
     font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 60px 15px; /* Reduce padding for very small screens */
+  }
+
+  .hero-section h1 {
+    font-size: 32px; /* Further reduce font size for h1 */
+  }
+
+  .hero-section p {
+    font-size: 16px; /* Further reduce font size for p */
   }
 }
