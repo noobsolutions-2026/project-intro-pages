@@ -1,0 +1,17 @@
+id: report-generation
+name: Report Generation
+intent: "Dynamic PDF and DOCX report generation for the Project Management Application."
+audience: "admins, sales teams, developers"
+tone: professional
+summary: |
+  The Report Generation feature is an extension of the Project Management Application, 
+  enabling users to design templates and generate professional reports. 
+  Leveraging Puppeteer for PDF and html-to-docx for Word documents, 
+  it ensures high-quality output with dynamic variable substitution.
+features:
+  - Customizable templates using TinyMCE and Mustache syntax
+  - High-quality PDF and DOCX export formats
+  - Real-time preview and dynamic variable mapping
+  - Secure S3 storage for generated reports
+  - Role-based access control for template management and generation
+cta: "Explore reporting features"
