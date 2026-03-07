@@ -1,358 +1,373 @@
-/* General Body and Container Styles */
+/* ═══════════════════════════════════════════════════════════════
+   Project Intro Pages — Shared Design System
+   Used by: docs/index.html
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Design Tokens ──────────────────────────────────────────── */
+:root {
+  --navy:       #0F1E3D;
+  --navy-light: #1a2f5a;
+  --teal:       #0D9488;
+  --teal-b:     #14B8A6;
+  --teal-bg:    #CCFBF1;
+  --slate:      #475569;
+  --slate-l:    #94A3B8;
+  --off-white:  #F8FAFC;
+  --border:     #E2E8F0;
+  --white:      #FFFFFF;
+  --accent:     #6366F1;   /* indigo accent for index page */
+  --card-bg:    #F1F5F9;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.1);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,.14);
+}
+
+/* ── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
+  background: var(--off-white);
+  color: var(--navy);
   line-height: 1.6;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f7f6;
-  color: #333;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-.container { /* Used by proj-mgmt-app.html */
-  max-width: 960px;
-  margin: 40px auto;
-  padding: 0 20px;
+/* ── Layout ─────────────────────────────────────────────────── */
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
-.main-container { /* Used by index.html */
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 20px;
+/* ── Navbar ─────────────────────────────────────────────────── */
+.navbar {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
-
-/* Header Styles for proj-mgmt-app.html */
-header {
+.navbar .container {
   display: flex;
   align-items: center;
-  padding: 20px 0;
-  margin-bottom: 30px;
-  border-bottom: 1px solid #eee;
+  justify-content: space-between;
+  height: 60px;
 }
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.nav-logo-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: var(--teal-b);
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+.nav-logo-text {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--navy);
+}
+.nav-logo-text span { color: var(--teal); }
 
-.logo {
-  font-size: 32px;
+/* ── Hero ───────────────────────────────────────────────────── */
+.hero {
+  background: var(--navy);
+  padding: 80px 0 72px;
+  position: relative;
+  overflow: hidden;
+}
+/* Dot-grid texture */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+/* Gradient glow */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(13,148,136,.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero .container { position: relative; z-index: 1; }
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(13,148,136,.18);
+  border: 1px solid rgba(13,148,136,.3);
+  color: var(--teal-b);
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 11px;
   font-weight: 700;
-  color: #2c3e50;
-  margin-right: 20px;
-  background-color: #e0e6ea;
-  padding: 8px 12px;
-  border-radius: 8px;
-}
-
-.header-content h1 {
-  font-size: 36px;
-  color: #2c3e50;
-  margin: 0;
-  font-weight: 600;
-}
-
-.header-content .intent {
-  font-size: 18px;
-  color: #7f8c8d;
-  margin-top: 5px;
-  font-weight: 300;
-}
-
-/* Hero Section for index.html */
-.hero-section {
-  background-color: #34495e;
-  color: #ffffff;
-  text-align: center;
-  padding: 80px 20px;
-  margin-bottom: 40px;
-  border-radius: 0 0 15px 15px;
-  display: flex; /* Explicitly set flex display */
-  flex-direction: column; /* Stack children vertically */
-  align-items: center; /* Center items horizontally within the flex container */
-}
-
-.hero-section h1 {
-  font-size: 48px;
-  margin-bottom: 15px;
-  font-weight: 700;
-  width: 100%;
-}
-
-.hero-section p {
-  font-size: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-  opacity: 0.9;
-  width: 100%;
-}
-
-/* Main Content Area for proj-mgmt-app.html */
-main {
-  padding: 20px 0;
-}
-
-/* Intro Nav for index.html */
-.intro-nav {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.intro-nav h2 {
-  font-size: 36px;
-  color: #2c3e50;
-  margin-bottom: 15px;
-  font-weight: 600;
-}
-
-.intro-nav p {
-  font-size: 18px;
-  color: #555;
-}
-
-
-/* Card Styles for proj-mgmt-app.html */
-.card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  padding: 30px;
-  margin-bottom: 30px;
-}
-
-.card .summary {
-  font-size: 17px;
-  margin-bottom: 25px;
-  color: #555;
-  line-height: 1.7;
-}
-
-/* Feature List Styles for proj-mgmt-app.html */
-.feature-list {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 30px;
-}
-
-.feature-list li {
-  background-color: #f8f8f8;
-  border-left: 4px solid #3498db;
-  padding: 12px 15px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  font-size: 16px;
-  color: #333;
-}
-
-/* User Cases Section for proj-mgmt-app.html */
-.user-cases {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-}
-
-.user-cases h2 {
-  font-size: 28px;
-  color: #2c3e50;
+  letter-spacing: .07em;
+  text-transform: uppercase;
   margin-bottom: 20px;
-  font-weight: 600;
+}
+.hero-eyebrow .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--teal-b);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.85); }
 }
 
-.user-cases h3 {
-  font-size: 22px;
-  color: #34495e;
-  margin-top: 25px;
-  margin-bottom: 10px;
-  font-weight: 600;
+.hero h1 {
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.1;
+  max-width: 680px;
+  margin-bottom: 18px;
 }
-
-.user-cases p {
-  margin-bottom: 15px;
+.hero h1 em {
+  font-style: normal;
+  color: var(--teal-b);
+}
+.hero-desc {
+  font-size: 16px;
+  color: rgba(255,255,255,.68);
+  max-width: 520px;
   line-height: 1.7;
-  color: #555;
 }
 
-.flow-diagram {
-  background-color: #e9ecef;
-  padding: 20px;
-  border-radius: 8px;
-  overflow-x: auto; /* Enable horizontal scrolling for wide diagrams */
-  margin-top: 25px;
+/* ── Section Header ─────────────────────────────────────────── */
+.section-wrap {
+  padding: 64px 0;
+}
+.section-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+.section-sub {
+  font-size: 15px;
+  color: var(--slate);
+  max-width: 540px;
 }
 
-.flow-diagram h3 {
-  margin-top: 0;
-  color: #2c3e50;
-  font-size: 20px;
+/* ── Project Cards Grid ─────────────────────────────────────── */
+.projects-section {
+  padding: 64px 0 80px;
 }
-
-.flow-diagram pre {
-  margin: 0;
-  white-space: pre; /* Ensure pre-formatted text respects spaces and line breaks */
-  word-wrap: normal;
+.projects-header {
+  text-align: center;
+  margin-bottom: 48px;
 }
+.projects-header .section-sub { margin: 0 auto; }
 
-.flow-diagram code {
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-  font-size: 14px;
-  line-height: 1.4;
-  color: #34495e;
-}
-
-/* Project Grid for index.html */
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  margin-bottom: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
 }
 
 .project-card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  padding: 25px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--teal), var(--accent));
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: transparent;
+}
+.project-card:hover::before { opacity: 1; }
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: rgba(15,30,61,.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 18px;
+  flex-shrink: 0;
 }
 
-.project-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.tag-pill {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--teal-bg);
+  color: var(--teal);
 }
 
 .project-card h3 {
-  font-size: 24px;
-  color: #2c3e50;
-  margin-top: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--navy);
   margin-bottom: 10px;
-  font-weight: 600;
+  line-height: 1.2;
 }
-
-.project-card .project-intent {
-  font-size: 16px;
-  color: #3498db;
-  margin-bottom: 15px;
-  font-weight: 400;
-}
-
-.project-card .project-summary {
-  font-size: 16px;
-  color: #555;
-  line-height: 1.6;
-  flex-grow: 1; /* Allows summary to take up available space */
-  margin-bottom: 20px;
-}
-
-/* Call to Action Button (proj-mgmt-app.html) */
-.cta-btn {
-  display: inline-block;
-  background-color: #3498db;
-  color: #ffffff;
-  padding: 14px 28px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 18px;
-  font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-  margin-top: 30px;
-  align-self: flex-start; /* Align button to start in flex container */
-}
-
-.cta-btn:hover {
-  background-color: #2980b9;
-  transform: translateY(-2px);
-}
-
-/* Card Call to Action Button (index.html) */
-.card-cta-btn {
-  display: inline-block;
-  background-color: #2c3e50; /* Darker color for card buttons */
-  color: #ffffff;
-  padding: 10px 20px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 500;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  margin-top: auto; /* Pushes button to bottom of card */
-  align-self: flex-start;
-}
-
-.card-cta-btn:hover {
-  background-color: #34495e;
-  transform: translateY(-2px);
-}
-
-
-/* Footer Styles */
-footer { /* Used by proj-mgmt-app.html */
-  text-align: center;
-  margin-top: 40px;
-  padding: 20px 0;
+.project-card .card-desc {
   font-size: 14px;
-  color: #888;
-  border-top: 1px solid #eee;
+  color: var(--slate);
+  line-height: 1.65;
+  flex-grow: 1;
+  margin-bottom: 24px;
 }
 
-.main-footer { /* Used by index.html */
+.card-features {
+  list-style: none;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.card-features li {
+  font-size: 13px;
+  color: var(--slate);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-features li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  flex-shrink: 0;
+}
+
+.card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--navy);
+  color: var(--white);
+  text-decoration: none;
+  padding: 11px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  transition: background .2s ease, transform .15s ease;
+  align-self: flex-start;
+  margin-top: auto;
+}
+.card-cta:hover {
+  background: var(--navy-light);
+  transform: translateY(-1px);
+}
+.card-cta svg {
+  transition: transform .2s ease;
+}
+.card-cta:hover svg {
+  transform: translateX(3px);
+}
+
+/* ── Sub-pages list on card ─────────────────────────────────── */
+.card-subpages {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.card-subpage-link {
+  font-size: 12px;
+  color: var(--teal);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+  transition: color .15s;
+}
+.card-subpage-link:hover { color: var(--navy); }
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.site-footer {
+  background: var(--navy);
+  color: rgba(255,255,255,.35);
   text-align: center;
-  margin-top: 40px;
-  padding: 25px 0;
-  font-size: 15px;
-  color: #7f8c8d;
-  border-top: 1px solid #e0e6ea;
+  padding: 28px 24px;
+  font-size: 13px;
 }
+.site-footer a {
+  color: rgba(255,255,255,.55);
+  text-decoration: none;
+}
+.site-footer a:hover { color: var(--teal-b); }
 
-/* Responsive Adjustments */
+/* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .hero-section h1 {
-    font-size: 36px;
-  }
-
-  .hero-section p, .intro-nav p {
-    font-size: 16px;
-  }
-
-  .intro-nav h2 {
-    font-size: 28px;
-  }
-
-  .project-grid {
-    grid-template-columns: 1fr; /* Stack cards on small screens */
-  }
-
-  .header-content h1 {
-    font-size: 28px;
-  }
-
-  .header-content .intent {
-    font-size: 16px;
-  }
-
-  .logo {
-    font-size: 28px;
-    padding: 6px 10px;
-  }
-
-  .card, .project-card {
-    padding: 20px;
-  }
-
-  .cta-btn, .card-cta-btn {
-    padding: 12px 24px;
-    font-size: 16px;
-  }
+  .hero { padding: 56px 0 52px; }
+  .hero h1 { font-size: 32px; }
+  .hero-desc { font-size: 15px; }
+  .projects-section { padding: 48px 0 60px; }
+  .project-grid { grid-template-columns: 1fr; }
 }
-
 @media (max-width: 480px) {
-  .hero-section {
-    padding: 60px 15px; /* Reduce padding for very small screens */
-  }
-
-  .hero-section h1 {
-    font-size: 32px; /* Further reduce font size for h1 */
-  }
-
-  .hero-section p {
-    font-size: 16px; /* Further reduce font size for p */
-  }
+  .hero { padding: 48px 0 44px; }
+  .hero h1 { font-size: 28px; }
 }
