@@ -2,7 +2,9 @@ name: Deploy Pages
 
 on:
   push:
-    branches: [ main ]
+    paths:
+      - 'docs/**'
+    # No branch filter — deploy on every branch push that touches docs/
   workflow_dispatch: {}
 
 jobs:
@@ -14,7 +16,7 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
