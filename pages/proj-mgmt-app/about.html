@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecurePM — Security Project Management Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ── Reset & tokens ─────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --navy:      #0F1E3D;
+            --teal:      #0D9488;
+            --teal-b:    #14B8A6;
+            --teal-bg:   #CCFBF1;
+            --slate:     #475569;
+            --slate-l:   #94A3B8;
+            --off-white: #F8FAFC;
+            --border:    #E2E8F0;
+            --white:     #FFFFFF;
+            --purple:    #8B5CF6;
+            --gold:      #F59E0B;
+            --green:     #10B981;
+            --blue:      #3B82F6;
+            --slack:     #611f69;
+            --slack-l:   #8a2b8a;
+            --card-bg:   #F1F5F9;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--off-white);
+            color: var(--navy);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── Utility ─────────────────────────────────────────────── */
+        .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+        .tag {
+            display: inline-block; padding: 3px 10px; border-radius: 4px;
+            font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+        }
+
+        /* ── Navbar ──────────────────────────────────────────────── */
+        .navbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .navbar .container {
+            display: flex; align-items: center; justify-content: space-between;
+            height: 56px;
+        }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-icon {
+            width: 32px; height: 32px; border-radius: 8px; background: var(--navy);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; color: var(--teal-b); font-weight: 900;
+        }
+        .logo-text { font-size: 16px; font-weight: 800; color: var(--navy); }
+        .logo-text span { color: var(--teal); }
+
+        .nav-links { display: flex; gap: 28px; list-style: none; }
+        .nav-links a {
+            color: var(--slate); text-decoration: none; font-size: 14px; font-weight: 500;
+            transition: color .2s;
+        }
+        .nav-links a:hover { color: var(--navy); }
+
+        .nav-cta {
+            background: var(--navy); color: var(--white); text-decoration: none;
+            padding: 8px 18px; border-radius: 6px; font-size: 13px; font-weight: 600;
+            transition: background .2s;
+        }
+        .nav-cta:hover { background: #1a2f5a; }
+
+        /* ── Hero ────────────────────────────────────────────────── */
+        .hero {
+            background: var(--navy);
+            padding: 56px 0 48px;
+            overflow: hidden; position: relative;
+        }
+        /* Subtle grid texture */
+        .hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+        .hero .container { position: relative; z-index: 1; }
+        .hero-inner {
+            display: grid; grid-template-columns: 1fr 420px; gap: 48px; align-items: center;
+        }
+
+        .hero-eyebrow {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+        }
+        .hero-eyebrow .badge {
+            background: rgba(13,148,136,.2); color: var(--teal-b);
+            padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700;
+            letter-spacing: .06em; text-transform: uppercase;
+        }
+        .hero-eyebrow .divider { width: 1px; height: 14px; background: rgba(255,255,255,.2); }
+        .hero-eyebrow .label { font-size: 12px; color: rgba(255,255,255,.45); }
+
+        .hero h1 {
+            font-size: 42px; font-weight: 900; color: var(--white);
+            line-height: 1.1; margin-bottom: 16px;
+        }
+        .hero h1 span { color: var(--teal-b); }
+        .hero-desc {
+            font-size: 15px; color: rgba(255,255,255,.7); line-height: 1.65;
+            max-width: 480px; margin-bottom: 28px;
+        }
+        .hero-btns { display: flex; gap: 12px; align-items: center; }
+        .btn-primary {
+            background: var(--teal); color: var(--white); padding: 12px 24px;
+            border-radius: 7px; font-size: 14px; font-weight: 700; text-decoration: none;
+            transition: background .2s, transform .15s;
+        }
+        .btn-primary:hover { background: #0b837a; transform: translateY(-1px); }
+        .btn-ghost {
+            color: rgba(255,255,255,.7); font-size: 14px; text-decoration: none;
+            display: flex; align-items: center; gap: 6px; font-weight: 500;
+            transition: color .2s;
+        }
+        .btn-ghost:hover { color: var(--white); }
+
+        /* Hero dashboard mockup */
+        .hero-visual {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 12px; overflow: hidden;
+        }
+        .mock-topbar {
+            background: rgba(255,255,255,.08); border-bottom: 1px solid rgba(255,255,255,.1);
+            padding: 10px 14px; display: flex; align-items: center; gap: 8px;
+        }
+        .mock-dot { width: 9px; height: 9px; border-radius: 50%; }
+        .mock-tabs { display: flex; gap: 4px; margin-left: 12px; }
+        .mock-tab {
+            padding: 3px 12px; border-radius: 4px; font-size: 10px; font-weight: 600;
+            color: rgba(255,255,255,.5);
+        }
+        .mock-tab.active { background: rgba(13,148,136,.3); color: var(--teal-b); }
+        .mock-body { padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+        .mock-stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 4px; }
+        .mock-stat {
+            background: rgba(255,255,255,.08); border-radius: 7px; padding: 10px 12px;
+        }
+        .mock-stat-num { font-size: 20px; font-weight: 900; color: var(--teal-b); }
+        .mock-stat-lbl { font-size: 9px; color: rgba(255,255,255,.45); margin-top: 1px; }
+        .mock-row {
+            background: rgba(255,255,255,.06); border-radius: 6px;
+            padding: 9px 12px; display: flex; align-items: center; gap: 10px;
+        }
+        .mock-badge {
+            font-size: 8px; font-weight: 700; padding: 2px 7px; border-radius: 3px;
+            white-space: nowrap;
+        }
+        .mock-title { font-size: 11px; color: rgba(255,255,255,.8); flex: 1; }
+        .mock-sub   { font-size: 9px; color: rgba(255,255,255,.35); }
+
+        /* ── Metrics strip ───────────────────────────────────────── */
+        .metrics-strip {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 18px 0;
+        }
+        .metrics-inner {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            divide: var(--border);
+        }
+        .metric-item {
+            text-align: center; padding: 0 24px;
+            border-right: 1px solid var(--border);
+        }
+        .metric-item:last-child { border-right: none; }
+        .metric-num { font-size: 28px; font-weight: 900; color: var(--teal); }
+        .metric-lbl { font-size: 12px; color: var(--slate); margin-top: 2px; }
+
+        /* ── Section chrome ──────────────────────────────────────── */
+        section { padding: 52px 0; }
+        section:nth-of-type(even) { background: var(--white); }
+        .section-tag { color: var(--teal); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+        .section-title { font-size: 28px; font-weight: 800; color: var(--navy); margin-bottom: 8px; line-height: 1.2; }
+        .section-sub { font-size: 15px; color: var(--slate); max-width: 560px; }
+
+        /* ── Features grid ───────────────────────────────────────── */
+        #features { background: var(--off-white); }
+        .features-header { margin-bottom: 32px; }
+        .feature-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+        }
+        .feature-card {
+            background: var(--white); border: 1px solid var(--border);
+            border-radius: 10px; padding: 22px; position: relative; overflow: hidden;
+            transition: box-shadow .2s, transform .2s;
+        }
+        .feature-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,.09);
+            transform: translateY(-2px);
+        }
+        .feature-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+        }
+        .feature-icon {
+            width: 40px; height: 40px; border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; margin-bottom: 14px;
+        }
+        .feature-card h4 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+        .feature-card p  { font-size: 13px; color: var(--slate); line-height: 1.55; }
+
+        /* Slack card highlight */
+        .feature-card.slack-card::before { background: linear-gradient(90deg, var(--slack), var(--slack-l)); }
+        .feature-card.slack-card .feature-icon { background: rgba(97,31,105,.1); }
+
+        /* ── Slack Notifications section ──────────────────────────── */
+        #slack-notifications {
+            background: var(--navy);
+            padding: 52px 0;
+        }
+        #slack-notifications .section-tag { color: #c47fd0; }
+        #slack-notifications .section-title { color: var(--white); }
+        #slack-notifications .section-sub { color: rgba(255,255,255,.6); }
+
+        .slack-layout {
+            display: grid; grid-template-columns: 1fr 300px; gap: 32px;
+            margin-top: 32px; align-items: start;
+        }
+
+        .notif-cards { display: flex; flex-direction: column; gap: 10px; }
+        .notif-card {
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.1);
+            border-left: 4px solid;
+            border-radius: 8px; padding: 14px 16px;
+            display: flex; gap: 14px; align-items: flex-start;
+            transition: background .2s;
+        }
+        .notif-card:hover { background: rgba(255,255,255,.09); }
+        .notif-icon {
+            width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; font-size: 17px;
+        }
+        .notif-card-title { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+        .notif-card-body  { font-size: 12.5px; color: rgba(255,255,255,.6); line-height: 1.5; }
+        .notif-recipients {
+            display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;
+        }
+        .notif-recipient-tag {
+            background: rgba(20,184,166,.15); color: var(--teal-b);
+            padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700;
+            letter-spacing: .03em;
+        }
+
+        /* Slack side panel */
+        .slack-panel {
+            background: var(--slack); border-radius: 12px;
+            padding: 24px 22px; display: flex; flex-direction: column; gap: 18px;
+        }
+        .slack-panel-logo {
+            display: flex; align-items: center; gap: 12px;
+        }
+        .slack-logo-icon {
+            width: 44px; height: 44px; border-radius: 10px;
+            background: rgba(255,255,255,.15);
+            display: flex; align-items: center; justify-content: center; font-size: 22px;
+        }
+        .slack-logo-name { font-size: 18px; font-weight: 800; color: var(--white); }
+        .slack-logo-sub  { font-size: 11px; color: rgba(255,255,255,.6); }
+        .slack-divider { height: 1px; background: rgba(255,255,255,.15); }
+        .slack-stat {
+            background: rgba(255,255,255,.12); border-radius: 8px; padding: 14px 16px;
+        }
+        .slack-stat-num   { font-size: 32px; font-weight: 900; color: var(--white); line-height: 1; }
+        .slack-stat-label { font-size: 11px; color: rgba(255,255,255,.65); margin-top: 4px; }
+        .slack-channel-list { display: flex; flex-direction: column; gap: 8px; }
+        .slack-channel {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 10px; border-radius: 6px; background: rgba(255,255,255,.08);
+        }
+        .slack-channel-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .slack-channel-name { font-size: 12px; color: rgba(255,255,255,.85); font-weight: 500; }
+        .slack-channel-count {
+            margin-left: auto; font-size: 10px; color: rgba(255,255,255,.45);
+        }
+
+        /* ── Tech stack ──────────────────────────────────────────── */
+        #tech-stack { background: var(--white); }
+        .tech-grid {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px;
+        }
+        .tech-pill {
+            background: var(--off-white); border: 1px solid var(--border);
+            padding: 8px 16px; border-radius: 999px;
+            font-size: 13px; font-weight: 600; color: var(--navy);
+            display: flex; align-items: center; gap: 8px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .tech-pill:hover {
+            border-color: var(--teal); box-shadow: 0 0 0 3px rgba(13,148,136,.1);
+        }
+        .tech-pill-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+        /* ── Roles section ───────────────────────────────────────── */
+        #roles { background: var(--off-white); }
+        .roles-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 28px; }
+        .role-card {
+            background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+            overflow: hidden;
+        }
+        .role-header { padding: 18px 20px 14px; color: var(--white); }
+        .role-letter {
+            width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,.2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; font-weight: 900; margin-bottom: 10px;
+        }
+        .role-name  { font-size: 18px; font-weight: 800; }
+        .role-sub   { font-size: 11px; opacity: .8; margin-top: 2px; }
+        .role-perms { padding: 14px 20px; list-style: none; }
+        .role-perms li {
+            font-size: 13px; color: var(--slate); padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .role-perms li:last-child { border-bottom: none; }
+        .role-perms li::before {
+            content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+        }
+
+        /* ── CTA ─────────────────────────────────────────────────── */
+        .cta-section {
+            background: linear-gradient(135deg, var(--teal) 0%, #0D5C73 100%);
+            padding: 52px 0; text-align: center;
+        }
+        .cta-section h2 { font-size: 30px; font-weight: 900; color: var(--white); margin-bottom: 10px; }
+        .cta-section p  { font-size: 15px; color: rgba(255,255,255,.8); margin-bottom: 24px; }
+        .btn-cta-white {
+            background: var(--white); color: var(--teal); padding: 13px 28px;
+            border-radius: 7px; font-size: 15px; font-weight: 700; text-decoration: none;
+            display: inline-block; transition: transform .15s, box-shadow .2s;
+        }
+        .btn-cta-white:hover {
+            transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.18);
+        }
+
+        /* ── Footer ──────────────────────────────────────────────── */
+        footer {
+            background: var(--navy); color: rgba(255,255,255,.45);
+            padding: 22px 0; text-align: center; font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Navbar ──────────────────────────────────────────────────── -->
+<nav class="navbar">
+    <div class="container">
+        <a class="logo" href="#">
+            <div class="logo-icon">S</div>
+            <span class="logo-text">Secure<span>PM</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#slack-notifications">Slack</a></li>
+            <li><a href="#roles">Roles</a></li>
+            <li><a href="#tech-stack">Tech Stack</a></li>
+        </ul>
+        <a href="#cta" class="nav-cta">Get Started</a>
+    </div>
+</nav>
+
+<!-- ── Hero ────────────────────────────────────────────────────── -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-inner">
+            <div>
+                <div class="hero-eyebrow">
+                    <span class="divider"></span>
+                    <span class="label">Slack Notifications now available</span>
+                </div>
+                <h1>Security Projects.<br><span>Fully Under Control.</span></h1>
+                <p class="hero-desc">
+                    From project intake to final report delivery — one structured platform
+                    for security teams that need visibility, automation, and enterprise-grade control.
+                </p>
+                <div class="hero-btns">
+                    <a href="#features" class="btn-primary">Explore Features</a>
+                    <a href="#cta" class="btn-ghost">Get a Demo →</a>
+                </div>
+            </div>
+
+            <!-- Mini dashboard mockup -->
+            <div class="hero-visual">
+                <div class="mock-topbar">
+                    <div class="mock-dot" style="background:#FF5F57"></div>
+                    <div class="mock-dot" style="background:#FEBC2E"></div>
+                    <div class="mock-dot" style="background:#28C840"></div>
+                    <div class="mock-tabs">
+                        <div class="mock-tab active">Dashboard</div>
+                        <div class="mock-tab">Projects</div>
+                        <div class="mock-tab">Reports</div>
+                    </div>
+                </div>
+                <div class="mock-body">
+                    <div class="mock-stat-row">
+                        <div class="mock-stat"><div class="mock-stat-num">12</div><div class="mock-stat-lbl">Active Projects</div></div>
+                        <div class="mock-stat"><div class="mock-stat-num">38</div><div class="mock-stat-lbl">Assessments</div></div>
+                        <div class="mock-stat"><div class="mock-stat-num">94</div><div class="mock-stat-lbl">Reports</div></div>
+                    </div>
+                    <div class="mock-row">
+                        <div class="mock-badge" style="background:rgba(16,185,129,.2);color:#10B981">Complete</div>
+                        <div class="mock-title">Alpha Corp — Web App PT</div>
+                        <div class="mock-sub">2 days ago</div>
+                    </div>
+                    <div class="mock-row">
+                        <div class="mock-badge" style="background:rgba(245,158,11,.2);color:#F59E0B">Ongoing</div>
+                        <div class="mock-title">Beta Ltd — Network VA</div>
+                        <div class="mock-sub">In progress</div>
+                    </div>
+                    <div class="mock-row">
+                        <div class="mock-badge" style="background:rgba(59,130,246,.2);color:#3B82F6">Revisit</div>
+                        <div class="mock-title">Gamma Inc — Source Review</div>
+                        <div class="mock-sub">Awaiting sign-off</div>
+                    </div>
+                    <div class="mock-row" style="opacity:.5">
+                        <div class="mock-badge" style="background:rgba(139,92,246,.2);color:#8B5CF6">Finding</div>
+                        <div class="mock-title">Delta Co — Wireless Audit</div>
+                        <div class="mock-sub">Report drafted</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── Metrics strip ─────────────────────────────────────────────── -->
+<div class="metrics-strip">
+    <div class="container">
+        <div class="metrics-inner">
+            <div class="metric-item">
+                <div class="metric-num">6</div>
+                <div class="metric-lbl">Assessment Types</div>
+            </div>
+            <div class="metric-item">
+                <div class="metric-num">13</div>
+                <div class="metric-lbl">Auto Report Variables</div>
+            </div>
+            <div class="metric-item">
+                <div class="metric-num">3</div>
+                <div class="metric-lbl">Role Tiers</div>
+            </div>
+            <div class="metric-item">
+                <div class="metric-num">6+</div>
+                <div class="metric-lbl">Slack Trigger Types</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── Features ─────────────────────────────────────────────────── -->
+<section id="features">
+    <div class="container">
+        <div class="features-header">
+            <p class="section-tag">Platform Features</p>
+            <h2 class="section-title">Everything Your Security Team Needs</h2>
+            <p class="section-sub">Built for security firms — not a generic PM tool bolted onto security workflows.</p>
+        </div>
+        <div class="feature-grid">
+
+            <div class="feature-card" style="--c:var(--navy)">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--navy)"></div>
+                <div class="feature-icon" style="background:rgba(15,30,61,.08)">🔐</div>
+                <h4>Microsoft Entra ID SSO</h4>
+                <p>OAuth 2.0/OIDC authentication with zero friction for Microsoft 365 environments. No extra credential management needed.</p>
+            </div>
+
+            <div class="feature-card" style="--c:var(--teal)">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)"></div>
+                <div class="feature-icon" style="background:rgba(13,148,136,.1)">📊</div>
+                <h4>Role-Based Dashboards</h4>
+                <p>Admin, Sales, and Delivery each see a tailored view. Revenue tracking, workload visibility, and status badges — all in one place.</p>
+            </div>
+
+            <div class="feature-card" style="--c:var(--blue)">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue)"></div>
+                <div class="feature-icon" style="background:rgba(59,130,246,.1)">📁</div>
+                <h4>Project & Assessment Management</h4>
+                <p>Six assessment types with 4-stage status workflow. S3 delivery folders auto-created; projects auto-complete when all assessments close.</p>
+            </div>
+
+            <div class="feature-card" style="--c:var(--purple)">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--purple)"></div>
+                <div class="feature-icon" style="background:rgba(139,92,246,.1)">📝</div>
+                <h4>Automated Report Generation</h4>
+                <p>TinyMCE templates with 13 auto-variables, auto-updated finding tables, and one-click PDF + DOCX export stored securely in S3.</p>
+            </div>
+
+            <div class="feature-card" style="--c:var(--gold)">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold)"></div>
+                <div class="feature-icon" style="background:rgba(245,158,11,.1)">☁️</div>
+                <h4>AWS Cloud Infrastructure</h4>
+                <p>DynamoDB, S3, SSM Parameter Store. Secrets loaded at runtime — never hardcoded. Deployed on ECS Fargate with Docker.</p>
+            </div>
+
+            <!-- Slack feature card — highlighted -->
+            <div class="feature-card slack-card">
+                <div class="feature-icon">💬</div>
+                <h4>Slack Notifications</h4>
+                <p>Real-time Slack alerts on status changes, report readiness, new assignments, and project completions — keeping every stakeholder informed automatically.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── Slack Notifications ────────────────────────────────────────── -->
+<section id="slack-notifications">
+    <div class="container">
+        <p class="section-tag">Slack Integration</p>
+        <h2 class="section-title">Never Miss a Beat</h2>
+        <p class="section-sub">Automated notifications sent to the right people at the right time — directly in Slack.</p>
+
+        <div class="slack-layout">
+            <!-- Notification cards -->
+            <div class="notif-cards">
+
+                <div class="notif-card" style="border-color:var(--teal)">
+                    <div class="notif-icon" style="background:rgba(13,148,136,.15)">📋</div>
+                    <div>
+                        <div class="notif-card-title">Assessment Status Change</div>
+                        <div class="notif-card-body">Triggered when a tester advances an assessment through any stage: Ongoing → Finding Report → Revisit → Completed. Includes project context and tester name.</div>
+                        <div class="notif-recipients">
+                            <span class="notif-recipient-tag">Project Lead</span>
+                            <span class="notif-recipient-tag">Sales Lead</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notif-card" style="border-color:var(--blue)">
+                    <div class="notif-icon" style="background:rgba(59,130,246,.15)">📄</div>
+                    <div>
+                        <div class="notif-card-title">Report Ready for Download</div>
+                        <div class="notif-card-body">Sent the moment both PDF and DOCX are generated and stored in S3. Includes direct download context so stakeholders act instantly.</div>
+                        <div class="notif-recipients">
+                            <span class="notif-recipient-tag">Admin</span>
+                            <span class="notif-recipient-tag">Sales Lead</span>
+                            <span class="notif-recipient-tag">Project Lead</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notif-card" style="border-color:var(--gold)">
+                    <div class="notif-icon" style="background:rgba(245,158,11,.15)">👤</div>
+                    <div>
+                        <div class="notif-card-title">New Assessment Assigned</div>
+                        <div class="notif-card-body">Delivery team members are pinged immediately when assigned to an assessment, with client name, assessment type, and allocated man-days included.</div>
+                        <div class="notif-recipients">
+                            <span class="notif-recipient-tag">Delivery Member</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notif-card" style="border-color:var(--green)">
+                    <div class="notif-icon" style="background:rgba(16,185,129,.15)">✅</div>
+                    <div>
+                        <div class="notif-card-title">Project Auto-Completed</div>
+                        <div class="notif-card-body">When all assessments reach Completed, the project closes automatically and all key stakeholders receive a completion summary in Slack.</div>
+                        <div class="notif-recipients">
+                            <span class="notif-recipient-tag">Admin</span>
+                            <span class="notif-recipient-tag">Sales Lead</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right panel -->
+            <div class="slack-panel">
+                <div class="slack-panel-logo">
+                    <div class="slack-logo-icon">💬</div>
+                    <div>
+                        <div class="slack-logo-name">Slack</div>
+                        <div class="slack-logo-sub">Integration</div>
+                    </div>
+                </div>
+                <div class="slack-divider"></div>
+                <div class="slack-stat">
+                    <div class="slack-stat-num">6+</div>
+                    <div class="slack-stat-label">Notification trigger types</div>
+                </div>
+                <div class="slack-channel-list">
+                    <div class="slack-channel">
+                        <div class="slack-channel-dot" style="background:var(--teal-b)"></div>
+                        <span class="slack-channel-name">#security-projects</span>
+                        <span class="slack-channel-count">Active</span>
+                    </div>
+                    <div class="slack-channel">
+                        <div class="slack-channel-dot" style="background:var(--gold)"></div>
+                        <span class="slack-channel-name">#reports-ready</span>
+                        <span class="slack-channel-count">Active</span>
+                    </div>
+                    <div class="slack-channel">
+                        <div class="slack-channel-dot" style="background:var(--green)"></div>
+                        <span class="slack-channel-name">#project-updates</span>
+                        <span class="slack-channel-count">Active</span>
+                    </div>
+                    <div class="slack-channel">
+                        <div class="slack-channel-dot" style="background:rgba(255,255,255,.3)"></div>
+                        <span class="slack-channel-name">#assignments</span>
+                        <span class="slack-channel-count">Active</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Roles ─────────────────────────────────────────────────────── -->
+<section id="roles">
+    <div class="container">
+        <p class="section-tag">Access Control</p>
+        <h2 class="section-title">Tailored for Every Stakeholder</h2>
+        <p class="section-sub">Three clearly defined roles — each user sees exactly what they need, nothing more.</p>
+        <div class="roles-grid">
+            <div class="role-card">
+                <div class="role-header" style="background:var(--navy)">
+                    <div class="role-letter">A</div>
+                    <div class="role-name">Admin</div>
+                    <div class="role-sub">Full Platform Oversight</div>
+                </div>
+                <ul class="role-perms">
+                    <li style="--c:var(--navy)"><span style="width:6px;height:6px;border-radius:50%;background:var(--navy);flex-shrink:0;display:inline-block"></span>Manage all projects, users &amp; roles</li>
+                    <li><span style="width:6px;height:6px;border-radius:50%;background:var(--navy);flex-shrink:0;display:inline-block"></span>Full report CRUD including delete</li>
+                    <li><span style="width:6px;height:6px;border-radius:50%;background:var(--navy);flex-shrink:0;display:inline-block"></span>Org-wide stats &amp; performance</li>
+                    <li><span style="width:6px;height:6px;border-radius:50%;background:var(--navy);flex-shrink:0;display:inline-block"></span>Receive all Slack notifications</li>
+                </ul>
+            </div>
+            <div class="role-card">
+                <div class="role-header" style="background:var(--teal)">
+                    <div class="role-letter">S</div>
+                    <div class="role-name">Sales</div>
+                    <div class="role-sub">Commercial Workflow</div>
+                </div>
+                <ul class="role-perms">
+                    <li><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;display:inline-block"></span>Create &amp; manage own projects</li>
+                    <li><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;display:inline-block"></span>Assign assessments to delivery</li>
+                    <li><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;display:inline-block"></span>Revenue tracking per project</li>
+                    <li><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;display:inline-block"></span>Slack alerts for project milestones</li>
+                </ul>
+            </div>
+            <div class="role-card">
+                <div class="role-header" style="background:var(--blue)">
+                    <div class="role-letter">D</div>
+                    <div class="role-name">Delivery</div>
+                    <div class="role-sub">Assessment Execution</div>
+                </div>
+                <ul class="role-perms">
+                    <li><span style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;display:inline-block"></span>View only assigned projects</li>
+                    <li><span style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;display:inline-block"></span>Update status &amp; upload findings</li>
+                    <li><span style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;display:inline-block"></span>Generate &amp; edit reports</li>
+                    <li><span style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;display:inline-block"></span>Notified on new assignments via Slack</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Tech Stack ─────────────────────────────────────────────────── -->
+<section id="tech-stack">
+    <div class="container">
+        <p class="section-tag">Under the Hood</p>
+        <h2 class="section-title">Built on Modern, Proven Technologies</h2>
+        <p class="section-sub">Enterprise infrastructure with zero compromise on security or reliability.</p>
+        <div class="tech-grid">
+            <div class="tech-pill"><div class="tech-pill-dot" style="background:#68a063"></div>Node.js &amp; Express</div>
+            <div class="tech-pill"><div class="tech-pill-dot" style="background:#FF9900"></div>AWS DynamoDB</div>
+            <div class="tech-pill"><div class="tech-pill-dot" style="background:#FF9900"></div>AWS S3</div>
+            <div class="tech-pill"><div class="tech-pill-dot" style="background:#FF9900"></div>AWS SSM</div>
+            <div class="tech-pill"><div class="tech-pill-dot" style="background:#0078D4"></div>Microsoft Entra ID</div>
+            <div class="tech-pill"><div class="tech-pill-dot" style="background:#2496ED"></div>Docker &amp; ECS Fargate</div>
+            <div class="tech-pill"><div class="tech-pill-dot" style="background:#c4383a"></div>Puppeteer (PDF)</div>
+            <div class="tech-pill"><div class="tech-pill-dot" style="background:#611f69"></div>Slack API</div>
+            <div class="tech-pill"><div class="tech-pill-dot" style="background:var(--teal)"></div>TinyMCE Editor</div>
+            <div class="tech-pill"><div class="tech-pill-dot" style="background:#f7df1e"></div>Vanilla JS / HTML / CSS</div>
+        </div>
+    </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────────────────────────── -->
+<section class="cta-section" id="cta">
+    <div class="container">
+        <h2>Ready to Streamline Your Security Operations?</h2>
+        <p>One platform. Total visibility. From first brief to final report.</p>
+        <a href="#" class="btn-cta-white">Request a Demo</a>
+    </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────────── -->
+<footer>
+    <div class="container">
+        <p>&copy; 2026 SecurePM Platform. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

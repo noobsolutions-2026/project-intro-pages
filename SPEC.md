@@ -1,45 +1,58 @@
 # SPEC: Project Intro Page Format
 
-This file defines the spec-driven format used to generate an introductory GitHub Pages entry for a project.
+This file defines the reference specification format for project intro pages in this repository.
+Pages currently live at `docs/pages/<project-id>/index.html` and are authored manually or with LLM assistance.
 
-Fields
+## Spec Fields
 
-- `id` (required): short identifier used as filename/slug (e.g. `proj-mgmt-app`).
-- `name` (required): human-friendly project name.
-- `intent` (required): one-sentence statement of the project's purpose.
-- `audience` (optional): who should read/consume this page.
-- `tone` (optional): neutral, technical, marketing, friendly, etc.
-- `summary` (required): short paragraph describing the project.
-- `features` (optional): list of key features or selling points.
-- `usage` (optional): short usage or how-to pointers.
-- `links` (optional): map of `label: url` for important links (repo, docs, demo).
-- `assets` (optional): list of image filenames under `docs/assets/`.
-- `cta` (optional): call-to-action (e.g., "Try the demo", "Open an issue").
+| Field | Required | Description |
+|---|---|---|
+| `id` | ✓ | Short identifier used as directory name / slug (e.g. `proj-mgmt-app`) |
+| `name` | ✓ | Human-friendly project name |
+| `intent` | ✓ | One-sentence statement of the project's purpose |
+| `summary` | ✓ | Short paragraph (2–4 sentences) describing the project |
+| `features` | — | List of key features or selling points |
+| `audience` | — | Who should read/consume this page |
+| `tone` | — | `neutral`, `technical`, `marketing`, or `friendly` |
+| `usage` | — | Short usage or how-to pointers |
+| `links` | — | Map of `label: url` for important links (repo, docs, demo) |
+| `assets` | — | List of image filenames under `docs/assets/` |
+| `cta` | — | Call-to-action text (e.g. "Try the demo", "Open an issue") |
+| `sub_pages` | — | List of sub-feature pages in the same project directory |
 
-Guidelines
+## Conventions
 
-- Keep `id` lowercase, hyphen-separated.
+- `id` must be lowercase and hyphen-separated.
 - `summary` should be 2–4 sentences.
-- `features` should be short bullet points.
+- `features` should be concise bullet points.
+- Project directory: `docs/pages/<id>/index.html`
+- Sub-feature pages: `docs/pages/<id>/<feature>.html`
+- Each page should include a "← Back" link to its parent.
 
-Example
+## Example
 
 ```yaml
 id: proj-mgmt-app
-name: Project Management App
-intent: "Provide a small, focused project management UI for teams"
-audience: "developers, product managers"
+name: Project Management Application
+intent: "Secure, role-based project management platform for cybersecurity assessment teams"
+audience: "Security firm managers, sales teams, delivery engineers"
 tone: marketing
 summary: |
-  Project Management App is a lightweight task and milestone tracker designed for small teams. It
-  focuses on fast setup, clear status, and minimal configuration.
+  A Node.js web application with Microsoft Entra ID (Azure AD) authentication,
+  three-tier RBAC (Admin / Sales / Delivery), and a full reporting pipeline
+  with PDF & DOCX generation — deployed to AWS ECS Fargate.
 features:
-  - Fast setup with Docker
-  - Lightweight API and UI
-usage: |
-  See the repository README for quick start instructions and deploy guides.
+  - Microsoft Entra ID SSO via OAuth 2.0 / OIDC
+  - Role-based dashboards for Admin, Sales, and Delivery
+  - S3-backed file storage and DynamoDB data layer
+  - Automated PDF & DOCX report generation
+  - Slack notifications on project milestones and status changes
+  - Docker + AWS ECS Fargate deployment
 links:
-  Repo: https://github.com/example/proj-mgmt-app
-  Demo: https://example.github.io/proj-mgmt-app
-cta: "Try the demo or open an issue to request features"
+  Repo: https://github.com/noobsolutions-2026/project-intro-pages
+cta: "View the full project introduction"
+sub_pages:
+  - id: report-generation
+    name: Report Generation
+    intent: "Dynamic PDF and DOCX report generation with Mustache templates and S3 storage"
 ```

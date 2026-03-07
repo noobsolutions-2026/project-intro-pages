@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Report Generation — design reusable templates and generate professional PDF &amp; DOCX reports with dynamic variable substitution. Part of the Project Management Application.">
+    <title>Report Generation — SecurePM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --navy: #0F1E3D;
+            --navy2: #1a2f5a;
+            --teal: #0D9488;
+            --teal-b: #14B8A6;
+            --teal-bg: #CCFBF1;
+            --slate: #475569;
+            --slate-l: #94A3B8;
+            --off-wh: #F8FAFC;
+            --border: #E2E8F0;
+            --white: #FFFFFF;
+            --purple: #8B5CF6;
+            --gold: #F59E0B;
+            --green: #10B981;
+            --blue: #3B82F6;
+            --font: 'Inter', system-ui, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--off-wh);
+            color: var(--navy);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1060px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ── Navbar ─────────────────────────────────────────────── */
+        .navbar {
+            background: rgba(255, 255, 255, .88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 58px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 7px;
+            background: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 900;
+            color: var(--teal-b);
+        }
+
+        .nav-logo-text {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        .nav-logo-text span {
+            color: var(--teal);
+        }
+
+        /* Breadcrumb */
+        .nav-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--slate);
+        }
+
+        .nav-breadcrumb a {
+            text-decoration: none;
+            color: var(--slate);
+            font-weight: 500;
+            transition: color .15s;
+        }
+
+        .nav-breadcrumb a:hover {
+            color: var(--teal);
+        }
+
+        .nav-breadcrumb .sep {
+            color: var(--slate-l);
+        }
+
+        .nav-breadcrumb .current {
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--slate);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            transition: color .15s, border-color .15s, background .15s;
+        }
+
+        .nav-back:hover {
+            color: var(--navy);
+            border-color: var(--teal);
+            background: var(--teal-bg);
+        }
+
+        /* ── Hero ───────────────────────────────────────────────── */
+        .hero {
+            background: var(--navy);
+            padding: 60px 0 52px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, .055) 1px, transparent 1px);
+            background-size: 28px 28px;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -80px;
+            left: -80px;
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, rgba(139, 92, 246, .2) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(139, 92, 246, .18);
+            border: 1px solid rgba(139, 92, 246, .3);
+            color: #c4b5fd;
+            padding: 5px 13px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #c4b5fd;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1)
+            }
+
+            50% {
+                opacity: .5;
+                transform: scale(.85)
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 900;
+            color: var(--white);
+            line-height: 1.1;
+            margin-bottom: 14px;
+        }
+
+        .hero h1 span {
+            color: #c4b5fd;
+        }
+
+        .hero-desc {
+            font-size: 15px;
+            color: rgba(255, 255, 255, .7);
+            line-height: 1.65;
+            max-width: 560px;
+            margin-bottom: 26px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-jump {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--purple);
+            color: var(--white);
+            padding: 11px 20px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background .2s, transform .15s;
+        }
+
+        .btn-jump:hover {
+            background: #7c3aed;
+            transform: translateY(-1px);
+        }
+
+        .btn-back-hero {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255, 255, 255, .65);
+            padding: 11px 16px;
+            border-radius: 7px;
+            border: 1px solid rgba(255, 255, 255, .2);
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color .2s, border-color .2s;
+        }
+
+        .btn-back-hero:hover {
+            color: var(--white);
+            border-color: rgba(255, 255, 255, .45);
+        }
+
+        /* ── Section ─────────────────────────────────────────────── */
+        section {
+            padding: 52px 0;
+        }
+
+        .s-tag {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--purple);
+            margin-bottom: 8px;
+        }
+
+        .s-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .s-sub {
+            font-size: 15px;
+            color: var(--slate);
+            max-width: 560px;
+        }
+
+        .s-head {
+            margin-bottom: 32px;
+        }
+
+        /* ── Feature grid ────────────────────────────────────────── */
+        .feat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .feat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow .2s, transform .2s;
+        }
+
+        .feat-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .09);
+            transform: translateY(-2px);
+        }
+
+        .feat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 14px;
+        }
+
+        .feat-card h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 7px;
+        }
+
+        .feat-card p {
+            font-size: 13px;
+            color: var(--slate);
+            line-height: 1.55;
+        }
+
+        /* ── Pipeline diagram ────────────────────────────────────── */
+        .pipeline {
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+            margin-top: 28px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .pipe-step {
+            flex: 1;
+            min-width: 130px;
+            position: relative;
+        }
+
+        .pipe-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -10px;
+            top: 22px;
+            font-size: 16px;
+            color: var(--slate-l);
+            font-weight: 700;
+            z-index: 1;
+        }
+
+        .pipe-box {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 12px;
+            margin: 0 12px;
+            text-align: center;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .pipe-box:hover {
+            border-color: var(--purple);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, .1);
+        }
+
+        .pipe-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--purple);
+            color: var(--white);
+            font-size: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+        }
+
+        .pipe-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .pipe-sub {
+            font-size: 10px;
+            color: var(--slate-l);
+        }
+
+        /* ── Variables table ─────────────────────────────────────── */
+        .var-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .var-table th {
+            background: var(--navy);
+            color: var(--white);
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .04em;
+        }
+
+        .var-table th:first-child {
+            border-radius: 6px 0 0 0;
+        }
+
+        .var-table th:last-child {
+            border-radius: 0 6px 0 0;
+        }
+
+        .var-table td {
+            padding: 9px 14px;
+            border-bottom: 1px solid var(--border);
+            background: var(--white);
+            color: var(--slate);
+        }
+
+        .var-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .var-table tr:hover td {
+            background: var(--off-wh);
+        }
+
+        .var-code {
+            font-family: 'SFMono-Regular', Consolas, monospace;
+            font-size: 12px;
+            color: var(--purple);
+            background: rgba(139, 92, 246, .08);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* ── Access control table ────────────────────────────────── */
+        .access-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .access-table th {
+            background: var(--navy);
+            color: var(--white);
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .access-table th:first-child {
+            border-radius: 6px 0 0 0;
+        }
+
+        .access-table th:last-child {
+            border-radius: 0 6px 0 0;
+        }
+
+        .access-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            background: var(--white);
+            color: var(--slate);
+            font-size: 13px;
+        }
+
+        .access-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .check {
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .cross {
+            color: #e53e3e;
+            font-weight: 700;
+        }
+
+        .partial {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* ── Up-level banner ─────────────────────────────────────── */
+        .uplevel-banner {
+            background: var(--navy);
+            border-radius: 12px;
+            padding: 26px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .uplevel-banner h3 {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 5px;
+        }
+
+        .uplevel-banner p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, .6);
+            max-width: 440px;
+        }
+
+        .btn-uplevel {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            white-space: nowrap;
+            background: var(--teal);
+            color: var(--white);
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: background .2s, transform .15s;
+            flex-shrink: 0;
+        }
+
+        .btn-uplevel:hover {
+            background: #0b837a;
+            transform: translateY(-1px);
+        }
+
+        /* ── Footer ─────────────────────────────────────────────── */
+        footer {
+            background: var(--navy);
+            color: rgba(255, 255, 255, .35);
+            padding: 24px 0;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, .55);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--teal-b);
+        }
+
+        /* ── Responsive ──────────────────────────────────────────── */
+        @media (max-width: 900px) {
+            .feat-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-breadcrumb {
+                display: none;
+            }
+
+            .uplevel-banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .feat-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .pipeline {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .pipe-step::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── Navbar ──────────────────────────────────────────────── -->
+    <nav class="navbar">
+        <div class="container">
+            <a class="nav-logo" href="../../">
+                <div class="nav-logo-icon">NS</div>
+                <span class="nav-logo-text">Noob<span>Solutions</span></span>
+            </a>
+            <!-- Breadcrumb -->
+            <div class="nav-breadcrumb">
+                <a href="../../">Projects</a>
+                <span class="sep">/</span>
+                <a href="./">Project Management App</a>
+                <span class="sep">/</span>
+                <span class="current">Report Generation</span>
+            </div>
+            <a class="nav-back" href="./">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                Project Mgmt App
+            </a>
+        </div>
+    </nav>
+
+    <!-- ── Hero ────────────────────────────────────────────────── -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                Sub-feature · Project Management App
+            </div>
+            <h1>Dynamic <span>Report Generation</span></h1>
+            <p class="hero-desc">
+                Design reusable HTML templates in a WYSIWYG editor, define Mustache-style variables,
+                then generate professional PDF &amp; DOCX reports at the click of a button —
+                with secure S3 storage and role-based access control.
+            </p>
+            <div class="hero-btns">
+                <a href="#features" class="btn-jump">
+                    Explore Features
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <a href="./" class="btn-back-hero">
+                    ← Back to Project Mgmt App
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Key Features ─────────────────────────────────────────── -->
+    <section id="features">
+        <div class="container">
+            <div class="s-head">
+                <p class="s-tag">Key Features</p>
+                <h2 class="s-title">Everything You Need to Produce Professional Reports</h2>
+                <p class="s-sub">From template design to final export — a fully integrated reporting pipeline.</p>
+            </div>
+            <div class="feat-grid">
+
+                <div class="feat-card">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--purple)"></div>
+                    <div class="feat-icon" style="background:rgba(139,92,246,.1)">✏️</div>
+                    <h4>WYSIWYG Template Editor</h4>
+                    <p>Build rich HTML templates using TinyMCE with image uploads, page settings (size, orientation,
+                        margins), and a live paginated preview powered by paged.js.</p>
+                </div>
+
+                <div class="feat-card">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)"></div>
+                    <div class="feat-icon" style="background:rgba(13,148,136,.1)">🔣</div>
+                    <h4>Mustache Variable System</h4>
+                    <p>Use <code
+                            style="font-family:monospace;font-size:12px;background:rgba(0,0,0,.05);padding:1px 4px;border-radius:3px">&#123;&#123;variable_name&#125;&#125;</code>
+                        syntax anywhere in templates. Variables are auto-extracted and surfaced as input fields at
+                        report generation time.</p>
+                </div>
+
+                <div class="feat-card">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue)"></div>
+                    <div class="feat-icon" style="background:rgba(59,130,246,.1)">📄</div>
+                    <h4>PDF Export via Puppeteer</h4>
+                    <p>Headless Chromium renders templates with full CSS support, native header/footer, and paged media
+                        — producing pixel-perfect PDFs stored directly in S3.</p>
+                </div>
+
+                <div class="feat-card">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold)"></div>
+                    <div class="feat-icon" style="background:rgba(245,158,11,.1)">📝</div>
+                    <h4>DOCX Export</h4>
+                    <p>Converts HTML to DOCX via <code
+                            style="font-family:monospace;font-size:12px;background:rgba(0,0,0,.05);padding:1px 4px;border-radius:3px">html-to-docx</code>
+                        with automatic image centering and HTML entity normalization for clean Word documents.</p>
+                </div>
+
+                <div class="feat-card">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#FF9900"></div>
+                    <div class="feat-icon" style="background:rgba(255,153,0,.1)">☁️</div>
+                    <h4>S3-Backed Storage</h4>
+                    <p>Template HTML/CSS, embedded images, and generated reports are all stored in S3. Presigned URLs
+                        (7-day validity for images, 1-hour for downloads) ensure secure, time-limited access.</p>
+                </div>
+
+                <div class="feat-card">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--navy)"></div>
+                    <div class="feat-icon" style="background:rgba(15,30,61,.08)">🔐</div>
+                    <h4>Role-Based Access</h4>
+                    <p>Admin and Sales users can create and use templates. Admins see all reports; Sales users see only
+                        their own. Only Admins can delete templates or reports.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Generation Pipeline ──────────────────────────────────── -->
+    <section style="background:var(--white)" id="pipeline">
+        <div class="container">
+            <div class="s-head">
+                <p class="s-tag">How It Works</p>
+                <h2 class="s-title">Report Generation Pipeline</h2>
+                <p class="s-sub">From template selection to a downloadable file in seconds.</p>
+            </div>
+            <div class="pipeline">
+                <div class="pipe-step">
+                    <div class="pipe-box">
+                        <div class="pipe-num">1</div>
+                        <div class="pipe-label">Select Template</div>
+                        <div class="pipe-sub">Pick or edit a saved template</div>
+                    </div>
+                </div>
+                <div class="pipe-step">
+                    <div class="pipe-box">
+                        <div class="pipe-num">2</div>
+                        <div class="pipe-label">Fill Variables</div>
+                        <div class="pipe-sub">Enter values for <code
+                                style="font-family:monospace;font-size:10px">&#123;&#123;...&#125;&#125;</code> fields
+                        </div>
+                    </div>
+                </div>
+                <div class="pipe-step">
+                    <div class="pipe-box">
+                        <div class="pipe-num">3</div>
+                        <div class="pipe-label">Mustache Render</div>
+                        <div class="pipe-sub">Variables substituted into HTML</div>
+                    </div>
+                </div>
+                <div class="pipe-step">
+                    <div class="pipe-box">
+                        <div class="pipe-num">4</div>
+                        <div class="pipe-label">PDF / DOCX</div>
+                        <div class="pipe-sub">Puppeteer or html-to-docx</div>
+                    </div>
+                </div>
+                <div class="pipe-step">
+                    <div class="pipe-box">
+                        <div class="pipe-num">5</div>
+                        <div class="pipe-label">Stored in S3</div>
+                        <div class="pipe-sub">Presigned download URL returned</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Built-in Variables ────────────────────────────────────── -->
+    <section id="variables">
+        <div class="container">
+            <div class="s-head">
+                <p class="s-tag">Variable System</p>
+                <h2 class="s-title">Built-in Template Variables</h2>
+                <p class="s-sub">These variables are available out-of-the-box in every template. Custom variables can be
+                    added freely.</p>
+            </div>
+            <table class="var-table">
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Intended Value</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="var-code">&#123;&#123;project_name&#125;&#125;</span></td>
+                        <td>Project name</td>
+                        <td>Alpha Corp Web App PT</td>
+                    </tr>
+                    <tr>
+                        <td><span class="var-code">&#123;&#123;client_name&#125;&#125;</span></td>
+                        <td>Client organisation</td>
+                        <td>Alpha Corporation Ltd</td>
+                    </tr>
+                    <tr>
+                        <td><span class="var-code">&#123;&#123;partner_name&#125;&#125;</span></td>
+                        <td>Partner / subcontractor</td>
+                        <td>Beta Partners Pte Ltd</td>
+                    </tr>
+                    <tr>
+                        <td><span class="var-code">&#123;&#123;project_lead&#125;&#125;</span></td>
+                        <td>Project lead name or email</td>
+                        <td>alice@example.com</td>
+                    </tr>
+                    <tr>
+                        <td><span class="var-code">&#123;&#123;sales_lead&#125;&#125;</span></td>
+                        <td>Sales lead name or email</td>
+                        <td>bob@example.com</td>
+                    </tr>
+                    <tr>
+                        <td><span class="var-code">&#123;&#123;date&#125;&#125;</span></td>
+                        <td>Report date</td>
+                        <td>07 March 2026</td>
+                    </tr>
+                    <tr>
+                        <td><span class="var-code">&#123;&#123;author&#125;&#125;</span></td>
+                        <td>Report author</td>
+                        <td>Alice Smith</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ── Access Control ────────────────────────────────────────── -->
+    <section style="background:var(--white)" id="access">
+        <div class="container">
+            <div class="s-head">
+                <p class="s-tag">Role-Based Access Control</p>
+                <h2 class="s-title">Who Can Do What</h2>
+                <p class="s-sub">Access is strictly governed by the user's role within the platform.</p>
+            </div>
+            <table class="access-table">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Admin</th>
+                        <th>Sales</th>
+                        <th>Delivery</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>View &amp; create templates</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Edit templates</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Delete templates</td>
+                        <td class="check">✓ Admin only</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Generate reports</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>View reports</td>
+                        <td class="check">All reports</td>
+                        <td class="partial">Own reports only</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Delete reports</td>
+                        <td class="check">✓ Admin only</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ── Parent project banner ─────────────────────────────────── -->
+    <section>
+        <div class="container">
+            <div class="uplevel-banner">
+                <div>
+                    <h3>🔐 Project Management Application</h3>
+                    <p>Report Generation is part of the SecurePM platform — explore the full feature set including
+                        authentication, role-based dashboards, assessment management, and Slack notifications.</p>
+                </div>
+                <a class="btn-uplevel" href="./">
+                    View Full Project
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Footer ────────────────────────────────────────────────── -->
+    <footer>
+        <div class="container">
+            <p>Report Generation · Part of <a href="./">Project Management Application</a> · <a href="../../">All
+                    Projects</a> · © 2026 Noob Solutions</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
