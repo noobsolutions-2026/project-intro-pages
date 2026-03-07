@@ -790,7 +790,7 @@
     <!-- ── Navbar ──────────────────────────────────────────────── -->
     <nav class="navbar">
         <div class="container">
-            <a class="nav-logo" href="../../">
+            <a class="nav-logo" href="../../index.html">
                 <div class="nav-logo-icon">NS</div>
                 <span class="nav-logo-text">Noob<span>Solutions</span></span>
             </a>
@@ -799,7 +799,7 @@
                 <li><a href="#roles">Roles</a></li>
                 <li><a href="#tech-stack">Tech Stack</a></li>
             </ul>
-            <a class="nav-back" href="../../">
+            <a class="nav-back" href="../../index.html">
                 <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
                 </svg>
@@ -982,59 +982,78 @@
         <div class="container">
             <div class="s-head">
                 <p class="s-tag">Access Control</p>
-                <h2 class="s-title">Tailored for Every Stakeholder</h2>
-                <p class="s-sub">Three clearly defined roles — each user sees exactly what they need, nothing more.</p>
+                <h2 class="s-title">Role-Based Access Control</h2>
+                <p class="s-sub">A two-layer model: a <strong>Role Gate</strong> checks if the role is allowed to act
+                    (returns 403 if not), then a <strong>Filter Level</strong> limits which records the user can see.
+                    Admins bypass all filters.</p>
             </div>
+
+            <!-- Role summary cards -->
             <div class="roles-grid">
                 <div class="role-card">
                     <div class="role-hdr" style="background:var(--navy)">
                         <div class="role-letter">A</div>
                         <div class="role-name">Admin</div>
-                        <div class="role-sub">Full Platform Oversight</div>
+                        <div class="role-sub">Full platform access — no restrictions</div>
                     </div>
                     <ul class="role-perms">
-                        <li><span class="rp-dot" style="background:var(--navy)"></span>Manage all projects, users &amp;
-                            roles</li>
-                        <li><span class="rp-dot" style="background:var(--navy)"></span>Full report CRUD including delete
+                        <li><span class="rp-dot" style="background:var(--navy)"></span>All projects, users &amp; roles
                         </li>
-                        <li><span class="rp-dot" style="background:var(--navy)"></span>Org-wide stats &amp; performance
-                        </li>
-                        <li><span class="rp-dot" style="background:var(--navy)"></span>Receive all Slack notifications
-                        </li>
+                        <li><span class="rp-dot" style="background:var(--navy)"></span>Create, assign, update any
+                            assessment</li>
+                        <li><span class="rp-dot" style="background:var(--navy)"></span>Full template &amp; report CRUD
+                            (inc. delete)</li>
+                        <li><span class="rp-dot" style="background:var(--navy)"></span>All Slack notifications</li>
                     </ul>
                 </div>
                 <div class="role-card">
                     <div class="role-hdr" style="background:var(--teal)">
                         <div class="role-letter">S</div>
                         <div class="role-name">Sales</div>
-                        <div class="role-sub">Commercial Workflow</div>
+                        <div class="role-sub">Own projects where projectLead / salesLead / teamMember</div>
                     </div>
                     <ul class="role-perms">
-                        <li><span class="rp-dot" style="background:var(--teal)"></span>Create &amp; manage own projects
+                        <li><span class="rp-dot" style="background:var(--teal)"></span>Create projects &amp; assign
+                            assessments</li>
+                        <li><span class="rp-dot" style="background:var(--teal)"></span>Update status on own projects
                         </li>
-                        <li><span class="rp-dot" style="background:var(--teal)"></span>Assign assessments to delivery
-                        </li>
-                        <li><span class="rp-dot" style="background:var(--teal)"></span>Revenue tracking per project</li>
-                        <li><span class="rp-dot" style="background:var(--teal)"></span>Slack alerts for project
-                            milestones</li>
+                        <li><span class="rp-dot" style="background:var(--teal)"></span>Templates: create, view, edit (no
+                            delete)</li>
+                        <li><span class="rp-dot" style="background:var(--teal)"></span>Reports: generate* / view / edit
+                            / download (own projects) — no delete</li>
                     </ul>
                 </div>
                 <div class="role-card">
                     <div class="role-hdr" style="background:var(--blue)">
                         <div class="role-letter">D</div>
                         <div class="role-name">Delivery</div>
-                        <div class="role-sub">Assessment Execution</div>
+                        <div class="role-sub">Assigned projects where teamMember / projectLead / salesLead</div>
                     </div>
                     <ul class="role-perms">
-                        <li><span class="rp-dot" style="background:var(--blue)"></span>View &amp; update assigned
-                            assessments</li>
-                        <li><span class="rp-dot" style="background:var(--blue)"></span>Upload findings to S3</li>
-                        <li><span class="rp-dot" style="background:var(--blue)"></span>Generate &amp; edit reports</li>
-                        <li><span class="rp-dot" style="background:var(--blue)"></span>Notified on new assignments via
-                            Slack</li>
+                        <li><span class="rp-dot" style="background:var(--blue)"></span>View projects &amp; update
+                            assessment status</li>
+                        <li><span class="rp-dot" style="background:var(--blue)"></span>Upload / download project files
+                        </li>
+                        <li><span class="rp-dot" style="background:var(--blue)"></span>Templates: create, view, edit (no
+                            delete)</li>
+                        <li><span class="rp-dot" style="background:var(--blue)"></span>Reports: generate* / view / edit
+                            / download (own projects) — no delete</li>
                     </ul>
                 </div>
             </div>
+
+            <!-- RBAC matrix note -->
+            <p style="font-size:12px;color:var(--slate-l);margin-top:18px;line-height:1.6">
+                * <strong>Generate</strong> uses <em>assessment-level</em> filtering — user must appear in the
+                assignment record for the specific assessment (<code
+                    style="font-family:monospace;font-size:11px">assignedMembers</code>, <code
+                    style="font-family:monospace;font-size:11px">assignedMember</code>, or <code
+                    style="font-family:monospace;font-size:11px">createdBy</code>).
+                All other report actions use <em>project-level</em> filtering (user must be <code
+                    style="font-family:monospace;font-size:11px">projectLead</code>, <code
+                    style="font-family:monospace;font-size:11px">salesLead</code>, or in <code
+                    style="font-family:monospace;font-size:11px">teamMembers</code>).
+            </p>
         </div>
     </section>
 
@@ -1108,7 +1127,7 @@
         <div class="container">
             <h2>Ready to Streamline Your Security Operations?</h2>
             <p>One platform. Total visibility. From first brief to final report.</p>
-            <a href="../../" class="btn-cta-white">
+            <a href="../../index.html" class="btn-cta-white">
                 ← Back to All Projects
             </a>
         </div>
@@ -1117,7 +1136,8 @@
     <!-- ── Footer ────────────────────────────────────────────────── -->
     <footer>
         <div class="container">
-            <p>Project Management Application · Part of the <a href="../../">Noob Solutions</a> showcase · © 2026</p>
+            <p>Project Management Application · Part of the <a href="../../index.html">Noob Solutions</a> showcase · ©
+                2026</p>
         </div>
     </footer>
 
