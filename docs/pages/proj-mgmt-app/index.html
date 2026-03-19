@@ -710,6 +710,155 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
         }
 
+        /* ── Slack Reminder section ─────────────────────────────── */
+        .reminder-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: var(--off-wh);
+            border: 1px solid var(--border);
+            border-left: 4px solid;
+            border-radius: 8px;
+            padding: 18px 20px;
+            transition: box-shadow .2s, transform .2s;
+        }
+
+        .reminder-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, .07);
+            transform: translateX(3px);
+        }
+
+        .reminder-icon {
+            font-size: 22px;
+            line-height: 1;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .reminder-meta {
+            margin-bottom: 6px;
+        }
+
+        .reminder-meta span {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            border: 1px solid;
+            border-radius: 999px;
+            padding: 2px 10px;
+        }
+
+        .reminder-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+
+        .reminder-desc {
+            font-size: 12.5px;
+            color: var(--slate);
+            line-height: 1.55;
+        }
+
+        .reminder-desc code {
+            font-family: monospace;
+            font-size: 11px;
+            background: rgba(15, 30, 61, .06);
+            padding: 1px 5px;
+            border-radius: 3px;
+            color: var(--navy);
+        }
+
+        .slack-mock {
+            background: #1a1d21;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .slack-mock-bar {
+            background: #19171d;
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, .7);
+        }
+
+        .slack-hash {
+            color: rgba(255, 255, 255, .35);
+            font-size: 14px;
+        }
+
+        .slack-mock-msg {
+            padding: 14px 16px;
+            border-left: 4px solid;
+            margin: 10px;
+            background: rgba(255, 255, 255, .04);
+            border-radius: 0 6px 6px 0;
+        }
+
+        .slack-msg-hdr {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .slack-msg-hdr strong {
+            font-size: 13px;
+            color: rgba(255, 255, 255, .9);
+            font-weight: 700;
+        }
+
+        .slack-time {
+            font-size: 10px;
+            color: rgba(255, 255, 255, .3);
+        }
+
+        .slack-msg-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, .85);
+            margin-bottom: 8px;
+        }
+
+        .slack-msg-body {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .slack-msg-line {
+            font-size: 12px;
+            color: rgba(255, 255, 255, .65);
+        }
+
+        .slack-msg-item {
+            font-size: 12px;
+            color: rgba(255, 255, 255, .55);
+            padding-left: 4px;
+        }
+
+        .slack-msg-foot {
+            font-size: 10px;
+            color: rgba(255, 255, 255, .3);
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        @media (max-width: 900px) {
+            .reminder-two-col {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
         /* ── Footer ─────────────────────────────────────────────── */
         footer {
             background: var(--navy);
@@ -798,6 +947,7 @@
                 <li><a href="#features">Features</a></li>
                 <li><a href="#roles">Roles</a></li>
                 <li><a href="#tech-stack">Tech Stack</a></li>
+                <li><a href="#slack-reminders">Slack Reminders</a></li>
             </ul>
             <a class="nav-back" href="../../index.html">
                 <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -906,8 +1056,8 @@
                     <div class="metric-lbl">Role Tiers</div>
                 </div>
                 <div class="metric-item">
-                    <div class="metric-num">6+</div>
-                    <div class="metric-lbl">Slack Trigger Types</div>
+                    <div class="metric-num">7</div>
+                    <div class="metric-lbl">Slack Notification Types</div>
                 </div>
             </div>
         </div>
@@ -969,8 +1119,7 @@
                     </div>
                     <div class="feat-icon" style="background:rgba(97,31,105,.1)">💬</div>
                     <h4>Slack Notifications</h4>
-                    <p>Real-time Slack alerts on status changes, report readiness, new assignments, and project
-                        completions.</p>
+                    <p>Real-time event alerts on assignments, status changes, and completions — plus three <strong>scheduled reminders</strong> (weekly, monthly, quarterly) that surface unassigned, stale, and overdue work automatically.</p>
                 </div>
 
                 <div class="feat-card" style="border-color:rgba(249,115,22,.3);grid-column:span 3">
@@ -980,8 +1129,8 @@
                     <div style="display:flex;align-items:flex-start;gap:20px">
                         <div class="feat-icon" style="background:rgba(249,115,22,.1);flex-shrink:0">🤖</div>
                         <div>
-                            <h4 style="margin-bottom:6px">AI-Assisted Finding Generation <span style="font-size:11px;font-weight:600;background:rgba(249,115,22,.12);color:#EA580C;border:1px solid rgba(249,115,22,.3);padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:middle">NEW</span></h4>
-                            <p>Paste raw assessment notes — DeepSeek AI identifies and consolidates findings, writes professional security write-ups with full CVSS 3.1 scoring, auto-sorted by severity. Yellow <code style="font-size:11px;background:rgba(249,115,22,.1);padding:1px 4px;border-radius:3px;font-family:monospace">[TO DO:]</code> markers highlight engagement-specific gaps for analyst review before delivery.</p>
+                            <h4 style="margin-bottom:6px">AI-Assisted Finding Write-up Generation</h4>
+                            <p>Paste raw assessment notes — AI identifies and consolidates findings, writes professional security write-ups with full CVSS 3.1 scoring, auto-sorted by severity. Yellow <code style="font-size:11px;background:rgba(249,115,22,.1);padding:1px 4px;border-radius:3px;font-family:monospace">[TO DO:]</code> markers highlight engagement-specific gaps for analyst review before delivery.</p>
                             <a href="./ai-reporting.html" style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:12px;font-weight:700;color:#EA580C;text-decoration:none">Explore AI Reporting →</a>
                         </div>
                     </div>
@@ -1139,21 +1288,113 @@
     <!-- ── AI Reporting sub-feature ─────────────────────────────── -->
     <section style="background:var(--off-wh);padding-top:0">
         <div class="container">
-            <div class="sub-feat-banner" style="border-color:rgba(249,115,22,.35);background:linear-gradient(135deg,rgba(249,115,22,.06) 0%,rgba(245,158,11,.04) 100%)">
+            <div class="sub-feat-banner" style="border-color:rgba(249,115,22,.5);background:linear-gradient(135deg,#1a0a00 0%,#2d1200 100%)">
                 <div>
-                    <h3>🤖 AI-Assisted Finding Generation <span style="font-size:11px;font-weight:700;background:rgba(249,115,22,.15);color:#EA580C;border:1px solid rgba(249,115,22,.35);padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:middle">NEW</span></h3>
+                    <h3>🤖 AI-Assisted Finding Write-up Generation</h3>
                     <p>
-                        Paste raw assessment notes — DeepSeek AI identifies findings, assigns severity, maps CVSS scores,
-                        and inserts structured content blocks directly into the report editor.
+                        Paste raw assessment notes — AI identifies findings, assigns severity, maps CVSS scores,
+                        and inserts structured write-ups directly into the report editor.
                     </p>
                 </div>
-                <a class="sub-feat-link" href="./ai-reporting.html" style="border-color:rgba(249,115,22,.4);color:#EA580C">
+                <a class="sub-feat-link" href="./ai-reporting.html" style="background:#EA580C;border-color:#EA580C;color:#fff">
                     Explore AI Reporting
                     <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                         stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Slack Reminder Workflow ───────────────────────────────── -->
+    <section id="slack-reminders" style="background:var(--white)">
+        <div class="container">
+            <div class="s-head" style="margin-bottom:32px">
+                <p class="s-tag" style="color:#611f69">Scheduled Notifications</p>
+                <h2 class="s-title">Slack Reminder Workflow</h2>
+                <p class="s-sub">Three scheduled reminders that surface stale work automatically — no manual chasing required. Silent when everything is on track; fires only when something needs attention.</p>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start" class="reminder-two-col">
+
+                <!-- Left: three reminder type cards -->
+                <div style="display:flex;flex-direction:column;gap:12px">
+
+                    <div class="reminder-card" style="border-left-color:#ECB22E">
+                        <div class="reminder-icon">⏰</div>
+                        <div>
+                            <div class="reminder-meta">
+                                <span style="background:rgba(236,178,46,.12);color:#92400E;border-color:rgba(236,178,46,.35)">Weekly &nbsp;·&nbsp; Every Monday 09:00 SGT</span>
+                            </div>
+                            <div class="reminder-title">Unassigned Projects</div>
+                            <p class="reminder-desc">Projects where no delivery team has been allocated. Fires when <code>hasAssigned=false</code> and age exceeds <code>REMINDER_UNASSIGNED_DAYS</code> (default 7 days). Sorted oldest-first with client name and age.</p>
+                        </div>
+                    </div>
+
+                    <div class="reminder-card" style="border-left-color:#E8610A">
+                        <div class="reminder-icon">📋</div>
+                        <div>
+                            <div class="reminder-meta">
+                                <span style="background:rgba(232,97,10,.12);color:#9A3412;border-color:rgba(232,97,10,.35)">Monthly &nbsp;·&nbsp; 1st of every month</span>
+                            </div>
+                            <div class="reminder-title">Stale Assessment Stages</div>
+                            <p class="reminder-desc">Individual assessments stuck in <code>ongoing</code> or <code>finding-report-released</code> with no status change. Fires after <code>REMINDER_STALE_DAYS</code> (default 30 days). Uses <code>statusUpdatedAt</code> field; falls back to project creation date for legacy records.</p>
+                        </div>
+                    </div>
+
+                    <div class="reminder-card" style="border-left-color:#E01E5A">
+                        <div class="reminder-icon">⚠️</div>
+                        <div>
+                            <div class="reminder-meta">
+                                <span style="background:rgba(224,30,90,.12);color:#9F1239;border-color:rgba(224,30,90,.35)">Quarterly &nbsp;·&nbsp; Jan / Apr / Jul / Oct 1st</span>
+                            </div>
+                            <div class="reminder-title">Uncompleted Projects</div>
+                            <p class="reminder-desc">Assigned but incomplete projects past the quarter mark. Fires after <code>REMINDER_UNCOMPLETED_DAYS</code> (default 90 days), showing completion ratio <code>completedCount/totalCount</code> for each project.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right: Slack message preview + env config -->
+                <div>
+                    <!-- Slack message mockup -->
+                    <div class="slack-mock">
+                        <div class="slack-mock-bar">
+                            <span class="slack-hash">#</span>
+                            <span>proj-alerts</span>
+                        </div>
+                        <div class="slack-mock-msg" style="border-left-color:#ECB22E">
+                            <div class="slack-msg-hdr">
+                                <span style="font-size:14px">🔔</span>
+                                <strong>SecurePM Bot</strong>
+                                <span class="slack-time">Mon 09:00</span>
+                            </div>
+                            <div class="slack-msg-title">⏰ Unassigned Projects Reminder</div>
+                            <div class="slack-msg-body">
+                                <div class="slack-msg-line"><strong>2 projects</strong> have been unassigned for 7+ days:</div>
+                                <div class="slack-msg-item">• <strong>PROJ-2026-042</strong> — Acme Corp <em>(12d)</em></div>
+                                <div class="slack-msg-item">• <strong>PROJ-2026-039</strong> — Beta Ltd / Partner Inc <em>(9d)</em></div>
+                            </div>
+                            <div class="slack-msg-foot">🕒 Weekly reminder · Mon, 31 Mar 2026 01:00:00 GMT</div>
+                        </div>
+                        <div class="slack-mock-msg" style="border-left-color:#E8610A;margin-top:0">
+                            <div class="slack-msg-hdr">
+                                <span style="font-size:14px">🔔</span>
+                                <strong>SecurePM Bot</strong>
+                                <span class="slack-time">1st 09:00</span>
+                            </div>
+                            <div class="slack-msg-title">📋 Stale Assessment Stage Reminder</div>
+                            <div class="slack-msg-body">
+                                <div class="slack-msg-line"><strong>1 assessment</strong> has not advanced in 30+ days:</div>
+                                <div class="slack-msg-item">• <strong>PROJ-2026-031</strong> › Web App Pentest — <code style="font-size:10px;background:rgba(255,255,255,.1);padding:1px 4px;border-radius:3px">ongoing</code> <em>(38d)</em></div>
+                            </div>
+                            <div class="slack-msg-foot">🕒 Monthly reminder · Tue, 1 Apr 2026 01:00:00 GMT</div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </section>
