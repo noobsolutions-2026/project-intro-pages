@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="AI-Assisted Finding Generation — paste raw assessment notes and let DeepSeek AI identify, structure, and insert security findings directly into your report. Part of the Project Management Application.">
+        content="AI-Assisted Finding Write-up Generation — paste raw assessment notes and let AI identify, structure, and insert security findings directly into your report. Part of the Project Management Application.">
     <title>AI Reporting — SecurePM</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -719,11 +719,11 @@
         <div class="container">
             <div class="hero-badge">
                 <span class="dot"></span>
-                New · Sub-feature · Project Management App
+                Sub-feature · Project Management App
             </div>
-            <h1>AI-Assisted <span>Finding Generation</span></h1>
+            <h1>AI-Assisted <span>Finding Write-up Generation</span></h1>
             <p class="hero-desc">
-                Paste raw security assessment notes — DeepSeek AI identifies and consolidates findings,
+                Paste raw security assessment notes — AI identifies and consolidates findings,
                 assigns severity levels, maps CVSS 3.1 scores, and inserts structured content blocks
                 directly into the report editor, severity-ordered from highest risk down.
             </p>
@@ -755,7 +755,7 @@
                     <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--orange)"></div>
                     <div class="feat-icon" style="background:rgba(234,88,12,.1)">🧠</div>
                     <h4>Batch Finding Detection</h4>
-                    <p>Paste up to ~10 pages of raw notes. DeepSeek AI parses the input and identifies individual findings — consolidating duplicates and surfacing distinct vulnerabilities as separate structured blocks.</p>
+                    <p>Paste up to ~10 pages of raw notes. AI parses the input and identifies individual findings — consolidating duplicates and surfacing distinct vulnerabilities as separate structured blocks.</p>
                 </div>
 
                 <div class="feat-card">
@@ -817,7 +817,7 @@
                     <div class="ai-box">
                         <div class="ai-num">2</div>
                         <div class="ai-label">AI Parse Call</div>
-                        <div class="ai-sub">DeepSeek identifies findings &amp; returns structured JSON list</div>
+                        <div class="ai-sub">AI identifies findings &amp; returns structured JSON list</div>
                     </div>
                 </div>
                 <div class="ai-step">
@@ -946,8 +946,8 @@
                 <div class="feat-card">
                     <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--navy)"></div>
                     <div class="feat-icon" style="background:rgba(15,30,61,.07)">🤖</div>
-                    <h4>DeepSeek AI Model</h4>
-                    <p>Uses the <code style="font-family:monospace;font-size:11px;background:rgba(0,0,0,.05);padding:1px 4px;border-radius:3px">deepseek-chat</code> model via the DeepSeek API. The parse call uses <code style="font-family:monospace;font-size:11px;background:rgba(0,0,0,.05);padding:1px 4px;border-radius:3px">max_tokens: 2000</code> with JSON-only output; each write-up call generates full HTML.</p>
+                    <h4>AI Language Model</h4>
+                    <p>Powered by a configurable AI language model via API. The parse call uses <code style="font-family:monospace;font-size:11px;background:rgba(0,0,0,.05);padding:1px 4px;border-radius:3px">max_tokens: 2000</code> with JSON-only output; each write-up call generates full HTML structured content.</p>
                 </div>
 
                 <div class="feat-card">
@@ -968,7 +968,7 @@
 
             <div class="tech-pills">
                 <div class="tech-pill">
-                    <div class="tech-dot" style="background:#1a1a2e"></div>DeepSeek API
+                    <div class="tech-dot" style="background:#1a1a2e"></div>AI API
                 </div>
                 <div class="tech-pill">
                     <div class="tech-dot" style="background:#f7df1e"></div>TinyMCE Integration
