@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="A curated showcase of software projects — explore detailed introductions, features, and technical deep-dives.">
+  <title>Project Showcase — Noob Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="./assets/style.css">
+</head>
+
+<body>
+
+  <!-- ── Navbar ──────────────────────────────────────────────── -->
+  <nav class="navbar">
+    <div class="container">
+      <a class="nav-logo" href="#">
+        <div class="nav-logo-icon">NS</div>
+        <span class="nav-logo-text">Noob<span>Solutions</span></span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">
+        <span class="dot"></span>
+        Project Showcase
+      </div>
+      <h1>Software Built with <em>Purpose &amp; Craft</em></h1>
+      <p class="hero-desc">
+        A curated collection of projects — each with a detailed introduction covering
+        the problem solved, the technology behind it, and how it all fits together.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Projects ────────────────────────────────────────────── -->
+  <section class="projects-section">
+    <div class="container">
+      <div class="projects-header">
+        <p class="section-tag">Our Projects</p>
+        <h2 class="section-title">Explore What We've Built</h2>
+        <p class="section-sub">Click any project to read the full introduction and explore its features.</p>
+      </div>
+
+      <div class="project-grid">
+
+        <!-- Project Management Application -->
+        <div class="project-card" id="proj-mgmt-app">
+          <div class="card-icon">🔐</div>
+          <div class="card-tags">
+            <span class="tag-pill">Node.js</span>
+            <span class="tag-pill">AWS</span>
+            <span class="tag-pill">Entra ID</span>
+            <span class="tag-pill">Docker</span>
+          </div>
+          <h3>Project Management Application</h3>
+          <p class="card-desc">
+            A secure, role-based project management platform built for cybersecurity assessment teams.
+            Features Microsoft Entra ID SSO, three-tier RBAC, and a full reporting pipeline with
+            PDF &amp; DOCX generation — all deployed to AWS ECS Fargate.
+          </p>
+          <ul class="card-features">
+            <li>Microsoft Entra ID (Azure AD) SSO via OAuth 2.0 / OIDC</li>
+            <li>Role-based dashboards — Admin, Sales, Delivery</li>
+            <li>S3-backed file storage &amp; DynamoDB data layer</li>
+            <li>Automated PDF &amp; DOCX report generation</li>
+            <li>Slack notifications on project milestones</li>
+          </ul>
+
+          <!-- Sub-pages -->
+          <div class="card-subpages">
+            <a class="card-subpage-link" href="./pages/proj-mgmt-app/report-generation.html">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+              Report Generation (sub-feature)
+            </a>
+          </div>
+
+          <a class="card-cta" href="./pages/proj-mgmt-app/index.html" id="proj-mgmt-app-cta">
+            View Project
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ──────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 Noob Solutions · <a href="https://github.com/noobsolutions-2026">GitHub</a></p>
+    </div>
+  </footer>
+
+</body>
+
+</html>
