@@ -616,11 +616,76 @@
             border: none;
         }
 
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .video-thumbnail:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 56px rgba(15, 30, 61, .2);
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #1e293b;
+            transition: all 0.3s ease;
+        }
+
+        .video-thumbnail:hover .play-button {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .video-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            text-align: center;
+        }
+
+        .video-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .video-duration {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(0, 0, 0, 0.6);
+            padding: 4px 12px;
+            border-radius: 16px;
+            display: inline-block;
+        }
+
         .video-caption {
             text-align: center;
             font-size: 12px;
             color: var(--slate-l);
             margin-top: 12px;
+        }
+
+        .access-note {
+            transition: all 0.3s ease;
         }
 
         /* ── Report Generation cross-promo ───────────────────────── */
@@ -789,13 +854,19 @@
                 <p class="s-sub">A ~70-second walkthrough of AI-assisted finding generation from raw notes to a structured report.</p>
             </div>
             <div class="video-wrap">
-                <iframe
-                    src="https://drive.google.com/file/d/1M5PCWPsv15nt56ZU-GV22GLasz1OAWB6/preview"
-                    allow="autoplay"
-                    allowfullscreen>
-                </iframe>
+                <a href="https://drive.google.com/file/d/1M5PCWPsv15nt56ZU-GV22GLasz1OAWB6/view?usp=sharing"
+                   target="_blank"
+                   class="video-thumbnail"
+                   rel="noopener noreferrer"
+                   onclick="return checkVideoAccess(this)">
+                    <div class="play-button">▶</div>
+                    <div class="video-overlay">
+                        <div class="video-title">AI Finding Generation Demo</div>
+                        <div class="video-duration">~70 seconds</div>
+                    </div>
+                </a>
             </div>
-            <p class="video-caption">Video hosted on Google Drive · No login required</p>
+            <p class="video-caption">Click to watch demo video · <span class="access-note">Public access required</span></p>
         </div>
     </section>
 
@@ -1088,6 +1159,41 @@
             <p>AI Reporting · Part of <a href="./">Project Management Application</a> · <a href="../../">All Projects</a> · © 2026 Noob Solutions</p>
         </div>
     </footer>
+
+    <script>
+        function checkVideoAccess(element) {
+            // Show a friendly message about the video access
+            const accessNote = document.querySelector('.access-note');
+            if (accessNote) {
+                accessNote.style.color = 'var(--orange)';
+                accessNote.style.fontWeight = '500';
+                accessNote.textContent = 'Opening video in new tab...';
+
+                setTimeout(() => {
+                    accessNote.style.color = '';
+                    accessNote.style.fontWeight = '';
+                    accessNote.textContent = 'Public access required';
+                }, 2000);
+            }
+
+            // Allow the click to proceed
+            return true;
+        }
+
+        // Add some visual feedback for the video thumbnail
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoThumbnail = document.querySelector('.video-thumbnail');
+            if (videoThumbnail) {
+                videoThumbnail.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.02)';
+                });
+
+                videoThumbnail.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            }
+        });
+    </script>
 
 </body>
 
