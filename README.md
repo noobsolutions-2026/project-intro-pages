@@ -1,40 +1,6 @@
 # project-intro-pages
 
-> Spec-driven generator and agents for GitHub Pages project intros
-
 A system for hosting and maintaining project introduction pages on GitHub Pages. Pages are authored as self-contained HTML files under `docs/`, organised by project, and deployed automatically via GitHub Actions.
-
----
-
-## Project Structure
-
-```
-project-intro-pages/
-├── docs/
-│   ├── index.html                          # Landing page (project listing)
-│   ├── assets/
-│   │   └── style.css                       # Shared design system (index page)
-│   ├── pages/
-│   │   └── proj-mgmt-app/
-│   │       ├── index.html                  # Project intro page
-│   │       └── report-generation.html      # Sub-feature page
-│   └── templates/
-│       ├── sample-page.html                # Project page template
-│       ├── index-template.html             # Landing page template
-│       ├── README.md                       # Template guide
-│       └── LLM_PROMPT.md                  # LLM generation guide
-├── pages/
-│   └── proj-mgmt-app/
-│       ├── about.html                      # Standalone product about page
-│       └── presentation.html               # Presentation slides
-├── scripts/
-│   └── test_page.sh                        # Test runner
-├── .github/workflows/
-│   ├── ci.yml                              # Run tests on any branch
-│   └── deploy-pages.yml                    # Deploy docs/ to GitHub Pages (any branch)
-├── package.json
-└── README.md
-```
 
 ## Page Authoring Workflow
 
