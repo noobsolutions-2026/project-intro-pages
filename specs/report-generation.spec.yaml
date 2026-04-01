@@ -9,7 +9,7 @@ summary: |
   Leveraging Puppeteer for PDF and html-to-docx for Word documents, 
   it ensures high-quality output with dynamic variable substitution.
 features:
-  - Customizable templates using TinyMCE and Mustache syntax
+  - Customizable templates using Quill and Mustache syntax
   - High-quality PDF and DOCX export formats
   - Real-time preview and dynamic variable mapping
   - Secure S3 storage for generated reports
