@@ -271,7 +271,6 @@ body {
   font-size: 14px;
   color: var(--slate);
   line-height: 1.65;
-  flex-grow: 1;
   margin-bottom: 24px;
 }
 

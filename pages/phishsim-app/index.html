@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Phishing Simulation Web App — a campaign management platform for security awareness testing, built with Node.js, AWS, and Microsoft Entra ID.">
+    <title>PhishSim — Phishing Simulation Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ── Tokens ─────────────────────────────────────────────── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --navy:    #0F1E3D;
+            --navy2:   #1a2f5a;
+            --teal:    #0D9488;
+            --teal-b:  #14B8A6;
+            --teal-bg: #CCFBF1;
+            --slate:   #475569;
+            --slate-l: #94A3B8;
+            --off-wh:  #F8FAFC;
+            --border:  #E2E8F0;
+            --white:   #FFFFFF;
+            --purple:  #8B5CF6;
+            --gold:    #F59E0B;
+            --green:   #10B981;
+            --blue:    #3B82F6;
+            --red:     #EF4444;
+            --orange:  #F97316;
+            --card-bg: #F1F5F9;
+            --font:    'Inter', system-ui, sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font);
+            background: var(--off-wh);
+            color: var(--navy);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ── Navbar ─────────────────────────────────────────────── */
+        .navbar {
+            background: rgba(255,255,255,.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 58px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 7px;
+            background: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 900;
+            color: var(--teal-b);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo-text {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        .nav-logo-text span { color: var(--teal); }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--slate);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            transition: color .15s, border-color .15s, background .15s;
+        }
+
+        .nav-back:hover {
+            color: var(--navy);
+            border-color: var(--teal);
+            background: var(--teal-bg);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 4px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--slate);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: color .15s, background .15s;
+        }
+
+        .nav-links a:hover {
+            color: var(--navy);
+            background: var(--card-bg);
+        }
+
+        /* ── Hero ───────────────────────────────────────────────── */
+        .hero {
+            background: var(--navy);
+            padding: 60px 0 52px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,.055) 1px, transparent 1px);
+            background-size: 28px 28px;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(13,148,136,.22) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero .container { position: relative; z-index: 1; }
+
+        .hero-inner {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(13,148,136,.18);
+            border: 1px solid rgba(13,148,136,.3);
+            color: var(--teal-b);
+            padding: 5px 13px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--teal-b);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity:1; transform:scale(1) }
+            50%       { opacity:.5; transform:scale(.85) }
+        }
+
+        .hero h1 {
+            font-size: clamp(30px, 4vw, 42px);
+            font-weight: 900;
+            color: var(--white);
+            line-height: 1.1;
+            margin-bottom: 14px;
+        }
+
+        .hero h1 span { color: var(--teal-b); }
+
+        .hero-desc {
+            font-size: 15px;
+            color: rgba(255,255,255,.7);
+            line-height: 1.65;
+            max-width: 480px;
+            margin-bottom: 26px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--teal);
+            color: var(--white);
+            padding: 11px 22px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: background .2s, transform .15s;
+        }
+
+        .btn-primary:hover { background: #0b837a; transform: translateY(-1px); }
+
+        .btn-ghost {
+            color: rgba(255,255,255,.65);
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            padding: 11px 16px;
+            border-radius: 7px;
+            border: 1px solid rgba(255,255,255,.2);
+            transition: color .2s, border-color .2s;
+        }
+
+        .btn-ghost:hover {
+            color: var(--white);
+            border-color: rgba(255,255,255,.45);
+        }
+
+        /* Hero dashboard mockup */
+        .hero-visual {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .mock-bar {
+            background: rgba(255,255,255,.08);
+            border-bottom: 1px solid rgba(255,255,255,.1);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mock-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+        }
+
+        .mock-tabs {
+            display: flex;
+            gap: 4px;
+            margin-left: 10px;
+        }
+
+        .mock-tab {
+            padding: 3px 11px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(255,255,255,.45);
+        }
+
+        .mock-tab.active {
+            background: rgba(13,148,136,.3);
+            color: var(--teal-b);
+        }
+
+        .mock-body {
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mock-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .mock-stat {
+            background: rgba(255,255,255,.08);
+            border-radius: 7px;
+            padding: 10px 12px;
+        }
+
+        .mock-stat-n {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--teal-b);
+        }
+
+        .mock-stat-l {
+            font-size: 9px;
+            color: rgba(255,255,255,.4);
+            margin-top: 2px;
+        }
+
+        .mock-row {
+            background: rgba(255,255,255,.06);
+            border-radius: 6px;
+            padding: 9px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mock-badge {
+            font-size: 8px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 3px;
+            white-space: nowrap;
+        }
+
+        .mock-title {
+            font-size: 11px;
+            color: rgba(255,255,255,.8);
+            flex: 1;
+        }
+
+        .mock-sub {
+            font-size: 9px;
+            color: rgba(255,255,255,.35);
+        }
+
+        /* ── Metrics strip ──────────────────────────────────────── */
+        .metrics-strip {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+        }
+
+        .metrics-inner {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .metric-item {
+            text-align: center;
+            padding: 0 20px;
+            border-right: 1px solid var(--border);
+        }
+
+        .metric-item:last-child { border-right: none; }
+
+        .metric-num {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--teal);
+        }
+
+        .metric-lbl {
+            font-size: 11px;
+            color: var(--slate);
+            margin-top: 2px;
+        }
+
+        /* ── Section chrome ─────────────────────────────────────── */
+        section { padding: 52px 0; }
+        section:nth-of-type(even) { background: var(--white); }
+
+        .s-tag {
+            color: var(--teal);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .s-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .s-sub {
+            font-size: 15px;
+            color: var(--slate);
+            max-width: 560px;
+        }
+
+        .s-head { margin-bottom: 32px; }
+
+        /* ── Features ───────────────────────────────────────────── */
+        .feat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .feat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow .2s, transform .2s;
+        }
+
+        .feat-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,.09);
+            transform: translateY(-2px);
+        }
+
+        .feat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 14px;
+        }
+
+        .feat-card h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 7px;
+        }
+
+        .feat-card p {
+            font-size: 13px;
+            color: var(--slate);
+            line-height: 1.55;
+        }
+
+        /* ── Campaign Lifecycle ─────────────────────────────────── */
+        .lifecycle-flow {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0;
+            margin-top: 32px;
+            position: relative;
+        }
+
+        .lifecycle-flow::before {
+            content: '';
+            position: absolute;
+            top: 28px;
+            left: calc(10% + 20px);
+            right: calc(10% + 20px);
+            height: 2px;
+            background: linear-gradient(90deg, var(--teal) 0%, var(--teal-b) 100%);
+            z-index: 0;
+        }
+
+        .lifecycle-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 0 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .lifecycle-num {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 900;
+            background: var(--white);
+            border: 2px solid var(--teal-b);
+            color: var(--teal);
+            flex-shrink: 0;
+        }
+
+        .lifecycle-step.active .lifecycle-num {
+            background: var(--teal);
+            color: var(--white);
+            border-color: var(--teal);
+        }
+
+        .lifecycle-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            text-align: center;
+        }
+
+        .lifecycle-desc {
+            font-size: 11px;
+            color: var(--slate);
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* Tracking events table */
+        .tracking-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .track-card {
+            background: var(--off-wh);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .track-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .track-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 3px;
+        }
+
+        .track-desc {
+            font-size: 12px;
+            color: var(--slate);
+            line-height: 1.5;
+        }
+
+        /* ── Roles ──────────────────────────────────────────────── */
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 28px;
+        }
+
+        .role-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .role-hdr {
+            padding: 18px 20px 14px;
+            color: var(--white);
+        }
+
+        .role-letter {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .role-name {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .role-sub {
+            font-size: 11px;
+            opacity: .8;
+            margin-top: 2px;
+        }
+
+        .role-perms {
+            padding: 14px 20px;
+            list-style: none;
+        }
+
+        .role-perms li {
+            font-size: 13px;
+            color: var(--slate);
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .role-perms li:last-child { border-bottom: none; }
+
+        .rp-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ── Tech stack ─────────────────────────────────────────── */
+        .tech-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 28px;
+        }
+
+        .tech-pill {
+            background: var(--off-wh);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .tech-pill:hover {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px rgba(13,148,136,.1);
+        }
+
+        .tech-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* ── CTA section ────────────────────────────────────────── */
+        .cta-section {
+            background: linear-gradient(135deg, var(--teal) 0%, #0D5C73 100%);
+            padding: 56px 0;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        .cta-section p {
+            font-size: 15px;
+            color: rgba(255,255,255,.8);
+            margin-bottom: 24px;
+        }
+
+        .btn-cta-white {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--white);
+            color: var(--teal);
+            padding: 13px 28px;
+            border-radius: 7px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform .15s, box-shadow .2s;
+        }
+
+        .btn-cta-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.18);
+        }
+
+        /* ── Footer ─────────────────────────────────────────────── */
+        footer {
+            background: var(--navy);
+            color: rgba(255,255,255,.35);
+            padding: 24px 0;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        footer a {
+            color: rgba(255,255,255,.55);
+            text-decoration: none;
+        }
+
+        footer a:hover { color: var(--teal-b); }
+
+        /* ── Responsive ─────────────────────────────────────────── */
+        @media (max-width: 900px) {
+            .hero-inner { grid-template-columns: 1fr; }
+            .hero-visual { display: none; }
+            .feat-grid { grid-template-columns: repeat(2, 1fr); }
+            .roles-grid { grid-template-columns: 1fr; }
+            .metrics-inner { grid-template-columns: repeat(2, 1fr); }
+            .metric-item:nth-child(2) { border-right: none; }
+            .metric-item:nth-child(3) { border-right: 1px solid var(--border); }
+            .lifecycle-flow { grid-template-columns: 1fr; gap: 20px; }
+            .lifecycle-flow::before { display: none; }
+            .lifecycle-step { flex-direction: row; align-items: flex-start; gap: 14px; text-align: left; }
+            .lifecycle-num { flex-shrink: 0; }
+            .lifecycle-label, .lifecycle-desc { text-align: left; }
+            .tracking-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 28px; }
+            .feat-grid { grid-template-columns: 1fr; }
+            .hero-btns { flex-direction: column; align-items: flex-start; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── Navbar ──────────────────────────────────────────────── -->
+    <nav class="navbar">
+        <div class="container">
+            <a class="nav-logo" href="../../index.html">
+                <div class="nav-logo-icon">NS</div>
+                <span class="nav-logo-text">Noob<span>Solutions</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#lifecycle">Campaign Lifecycle</a></li>
+                <li><a href="#roles">Roles</a></li>
+                <li><a href="#tech-stack">Tech Stack</a></li>
+            </ul>
+            <a class="nav-back" href="../../index.html">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                All Projects
+            </a>
+        </div>
+    </nav>
+
+    <!-- ── Hero ────────────────────────────────────────────────── -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-inner">
+                <div>
+                    <div class="hero-badge">
+                        <span class="dot"></span>
+                        Security Awareness · Phishing Simulation
+                    </div>
+                    <h1>Phishing Campaigns.<br><span>From Setup to Results.</span></h1>
+                    <p class="hero-desc">
+                        A full-cycle phishing simulation platform for security consultants — design email campaigns,
+                        craft realistic landing pages, track every click and submission, and report with clarity.
+                    </p>
+                    <div class="hero-btns">
+                        <a href="#features" class="btn-primary">
+                            Explore Features
+                            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                        <a href="#lifecycle" class="btn-ghost">
+                            Campaign Lifecycle →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mini campaign dashboard mockup -->
+                <div class="hero-visual">
+                    <div class="mock-bar">
+                        <div class="mock-dot" style="background:#FF5F57"></div>
+                        <div class="mock-dot" style="background:#FEBC2E"></div>
+                        <div class="mock-dot" style="background:#28C840"></div>
+                        <div class="mock-tabs">
+                            <div class="mock-tab active">Campaigns</div>
+                            <div class="mock-tab">Results</div>
+                            <div class="mock-tab">Templates</div>
+                        </div>
+                    </div>
+                    <div class="mock-body">
+                        <div class="mock-stats">
+                            <div class="mock-stat">
+                                <div class="mock-stat-n">3</div>
+                                <div class="mock-stat-l">Running</div>
+                            </div>
+                            <div class="mock-stat">
+                                <div class="mock-stat-n" style="font-size:16px">1,247</div>
+                                <div class="mock-stat-l">Total Targets</div>
+                            </div>
+                            <div class="mock-stat">
+                                <div class="mock-stat-n">23%</div>
+                                <div class="mock-stat-l">Click Rate</div>
+                            </div>
+                        </div>
+                        <div class="mock-row">
+                            <div class="mock-badge" style="background:rgba(16,185,129,.2);color:#10B981">Complete</div>
+                            <div class="mock-title">Acme Corp — IT Helpdesk Spoof</div>
+                            <div class="mock-sub">89 captured</div>
+                        </div>
+                        <div class="mock-row">
+                            <div class="mock-badge" style="background:rgba(245,158,11,.2);color:#F59E0B">Running</div>
+                            <div class="mock-title">BetaFinance — Password Reset</div>
+                            <div class="mock-sub">In progress</div>
+                        </div>
+                        <div class="mock-row">
+                            <div class="mock-badge" style="background:rgba(59,130,246,.2);color:#3B82F6">Draft</div>
+                            <div class="mock-title">Gamma Tech — CEO Spearphish</div>
+                            <div class="mock-sub">Awaiting launch</div>
+                        </div>
+                        <div class="mock-row" style="opacity:.45">
+                            <div class="mock-badge" style="background:rgba(139,92,246,.2);color:#8B5CF6">Scheduled</div>
+                            <div class="mock-title">Delta Retail — Bulk Awareness</div>
+                            <div class="mock-sub">Launch in 2 days</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Metrics strip ────────────────────────────────────────── -->
+    <div class="metrics-strip">
+        <div class="container">
+            <div class="metrics-inner">
+                <div class="metric-item">
+                    <div class="metric-num">5</div>
+                    <div class="metric-lbl">Campaign Stages</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-num">4</div>
+                    <div class="metric-lbl">Tracking Event Types</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-num">2</div>
+                    <div class="metric-lbl">Role Tiers</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-num">AI</div>
+                    <div class="metric-lbl">Content Generation</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Features ─────────────────────────────────────────────── -->
+    <section id="features">
+        <div class="container">
+            <div class="s-head">
+                <p class="s-tag">Platform Features</p>
+                <h2 class="s-title">Everything Needed to Run Phishing Simulations</h2>
+                <p class="s-sub">Built for security consultants — end-to-end campaign management with content authoring, real-time tracking, and results analysis.</p>
+            </div>
+            <div class="feat-grid">
+
+                <div class="feat-card">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)"></div>
+                    <div class="feat-icon" style="background:rgba(13,148,136,.1)">📋</div>
+                    <h4>Campaign Builder</h4>
+                    <p>Multi-step guided setup: choose targets, assign email and landing page templates, configure an SMTP profile, and set a schedule — with live preview before launch.</p>
+                </div>
+
+                <div class="feat-card">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue)"></div>
+                    <div class="feat-icon" style="background:rgba(59,130,246,.1)">👥</div>
+                    <h4>Target Management</h4>
+                    <p>Import targets in bulk via CSV upload. Manage individual targets and groups, with per-target tracking across all campaigns they appear in.</p>
+                </div>
+
+                <div class="feat-card">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--purple)"></div>
+                    <div class="feat-icon" style="background:rgba(139,92,246,.1)">✉️</div>
+                    <h4>Email Template Editor</h4>
+                    <p>WYSIWYG rich-text email composer with a reusable template library. Supports dynamic variables for personalised per-target content at send time.</p>
+                </div>
+
+                <div class="feat-card">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--orange)"></div>
+                    <div class="feat-icon" style="background:rgba(249,115,22,.1)">🌐</div>
+                    <h4>Landing Page Designer</h4>
+                    <p>Build credential-harvesting landing pages with a visual editor. Configure a branded thank-you page shown after submission, with full HTML control.</p>
+                </div>
+
+                <div class="feat-card">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold)"></div>
+                    <div class="feat-icon" style="background:rgba(245,158,11,.1)">📡</div>
+                    <h4>SMTP Profile Management</h4>
+                    <p>Define and store multiple sending profiles — each with its own server, credentials, and sender identity. Send a test email directly from any profile to verify deliverability.</p>
+                </div>
+
+                <div class="feat-card">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--green)"></div>
+                    <div class="feat-icon" style="background:rgba(16,185,129,.1)">📊</div>
+                    <h4>Real-time Results Dashboard</h4>
+                    <p>Per-campaign and per-target event timeline — emails sent, opened, links clicked, and credentials submitted. Filterable view with exportable summary data.</p>
+                </div>
+
+                <div class="feat-card" style="border-color:rgba(249,115,22,.3);grid-column:span 3">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#F97316,#F59E0B)"></div>
+                    <div style="display:flex;align-items:flex-start;gap:20px">
+                        <div class="feat-icon" style="background:rgba(249,115,22,.1);flex-shrink:0">🤖</div>
+                        <div>
+                            <h4 style="margin-bottom:6px">AI-Generated Email &amp; Landing Page Content</h4>
+                            <p>Describe the pretext in plain language — AI generates a convincing phishing email and a matching landing page in one request. Adjust tone, branding colour, and style, then insert the output directly into the campaign editor for final review before launch.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Campaign Lifecycle ────────────────────────────────────── -->
+    <section id="lifecycle" style="background:var(--white)">
+        <div class="container">
+            <div class="s-head">
+                <p class="s-tag">Campaign Workflow</p>
+                <h2 class="s-title">Five Stages from Setup to Completion</h2>
+                <p class="s-sub">Campaigns follow a structured state machine — each stage gates the actions available, preventing premature launches or incomplete configurations.</p>
+            </div>
+
+            <div class="lifecycle-flow">
+                <div class="lifecycle-step active">
+                    <div class="lifecycle-num">1</div>
+                    <div>
+                        <div class="lifecycle-label">Setup</div>
+                        <div class="lifecycle-desc">Configure targets, templates, SMTP profile, and send schedule</div>
+                    </div>
+                </div>
+                <div class="lifecycle-step">
+                    <div class="lifecycle-num">2</div>
+                    <div>
+                        <div class="lifecycle-label">Draft</div>
+                        <div class="lifecycle-desc">Review campaign details and preview email &amp; landing page</div>
+                    </div>
+                </div>
+                <div class="lifecycle-step">
+                    <div class="lifecycle-num">3</div>
+                    <div>
+                        <div class="lifecycle-label">Test</div>
+                        <div class="lifecycle-desc">Send a test email to verify deliverability and rendering</div>
+                    </div>
+                </div>
+                <div class="lifecycle-step">
+                    <div class="lifecycle-num">4</div>
+                    <div>
+                        <div class="lifecycle-label">Running</div>
+                        <div class="lifecycle-desc">Campaign live — emails dispatched, events tracked in real time</div>
+                    </div>
+                </div>
+                <div class="lifecycle-step">
+                    <div class="lifecycle-num">5</div>
+                    <div>
+                        <div class="lifecycle-label">Complete</div>
+                        <div class="lifecycle-desc">Campaign closed — full results available for reporting</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top:48px">
+                <div class="s-head" style="margin-bottom:0">
+                    <p class="s-tag">Event Tracking</p>
+                    <h2 class="s-title" style="font-size:20px">Four Tracking Events per Target</h2>
+                </div>
+                <div class="tracking-grid">
+                    <div class="track-card">
+                        <div class="track-icon" style="background:rgba(59,130,246,.1)">📨</div>
+                        <div>
+                            <div class="track-label">Email Sent</div>
+                            <div class="track-desc">Recorded the moment Nodemailer successfully dispatches the phishing email to the target's address.</div>
+                        </div>
+                    </div>
+                    <div class="track-card">
+                        <div class="track-icon" style="background:rgba(245,158,11,.1)">👁️</div>
+                        <div>
+                            <div class="track-label">Email Opened</div>
+                            <div class="track-desc">Detected via a 1×1 tracking pixel embedded in the email body — records timestamp and IP on load.</div>
+                        </div>
+                    </div>
+                    <div class="track-card">
+                        <div class="track-icon" style="background:rgba(249,115,22,.1)">🔗</div>
+                        <div>
+                            <div class="track-label">Link Clicked</div>
+                            <div class="track-desc">Tracked when the target clicks the phishing link — routed through a redirect handler before landing on the phishing page.</div>
+                        </div>
+                    </div>
+                    <div class="track-card">
+                        <div class="track-icon" style="background:rgba(239,68,68,.1)">🎣</div>
+                        <div>
+                            <div class="track-label">Credentials Submitted</div>
+                            <div class="track-desc">Recorded when the target submits the landing page form — captures the event without storing credential values.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Roles ─────────────────────────────────────────────────── -->
+    <section id="roles">
+        <div class="container">
+            <div class="s-head">
+                <p class="s-tag">Access Control</p>
+                <h2 class="s-title">Role-Based Access Control</h2>
+                <p class="s-sub">Microsoft Entra ID authentication with two role tiers — platform-wide admin control and an operator scope for campaign work.</p>
+            </div>
+
+            <div class="roles-grid">
+                <div class="role-card">
+                    <div class="role-hdr" style="background:var(--navy)">
+                        <div class="role-letter">A</div>
+                        <div class="role-name">Admin</div>
+                        <div class="role-sub">Full platform access</div>
+                    </div>
+                    <ul class="role-perms">
+                        <li><span class="rp-dot" style="background:var(--teal)"></span>Manage all users and role assignments</li>
+                        <li><span class="rp-dot" style="background:var(--teal)"></span>Create, edit, launch, and delete campaigns</li>
+                        <li><span class="rp-dot" style="background:var(--teal)"></span>Manage clients, SMTP profiles, and templates</li>
+                        <li><span class="rp-dot" style="background:var(--teal)"></span>Access full results and audit history</li>
+                        <li><span class="rp-dot" style="background:var(--teal)"></span>Configure platform settings and integrations</li>
+                    </ul>
+                </div>
+                <div class="role-card">
+                    <div class="role-hdr" style="background:linear-gradient(135deg,var(--teal) 0%,#0D5C73 100%)">
+                        <div class="role-letter">O</div>
+                        <div class="role-name">Operator</div>
+                        <div class="role-sub">Campaign-scoped access</div>
+                    </div>
+                    <ul class="role-perms">
+                        <li><span class="rp-dot" style="background:var(--teal-b)"></span>Create and manage own campaigns</li>
+                        <li><span class="rp-dot" style="background:var(--teal-b)"></span>Author and use email &amp; landing page templates</li>
+                        <li><span class="rp-dot" style="background:var(--teal-b)"></span>Import and manage target lists</li>
+                        <li><span class="rp-dot" style="background:var(--teal-b)"></span>View campaign results and per-target events</li>
+                        <li><span class="rp-dot" style="background:var(--slate-l)"></span>No access to user management or global settings</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Tech Stack ───────────────────────────────────────────── -->
+    <section id="tech-stack" style="background:var(--white)">
+        <div class="container">
+            <div class="s-head">
+                <p class="s-tag">Tech Stack</p>
+                <h2 class="s-title">Built on Proven, Production-Ready Infrastructure</h2>
+                <p class="s-sub">Node.js at the core, AWS for cloud primitives, and hardened with defence-in-depth security controls.</p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-pill">
+                    <div class="tech-dot" style="background:#68a063"></div>Node.js + Express
+                </div>
+                <div class="tech-pill">
+                    <div class="tech-dot" style="background:#0078d4"></div>Microsoft Entra ID
+                </div>
+                <div class="tech-pill">
+                    <div class="tech-dot" style="background:#FF9900"></div>AWS DynamoDB
+                </div>
+                <div class="tech-pill">
+                    <div class="tech-dot" style="background:#FF9900"></div>AWS S3
+                </div>
+                <div class="tech-pill">
+                    <div class="tech-dot" style="background:#FF9900"></div>AWS SSM Parameter Store
+                </div>
+                <div class="tech-pill">
+                    <div class="tech-dot" style="background:#2496ED"></div>Docker + ECS Fargate
+                </div>
+                <div class="tech-pill">
+                    <div class="tech-dot" style="background:#1a1a2e"></div>AI API
+                </div>
+                <div class="tech-pill">
+                    <div class="tech-dot" style="background:#f7df1e"></div>Nodemailer
+                </div>
+                <div class="tech-pill">
+                    <div class="tech-dot" style="background:var(--green)"></div>Helmet + CSRF
+                </div>
+                <div class="tech-pill">
+                    <div class="tech-dot" style="background:var(--blue)"></div>Passport.js
+                </div>
+                <div class="tech-pill">
+                    <div class="tech-dot" style="background:var(--purple)"></div>node-cron
+                </div>
+                <div class="tech-pill">
+                    <div class="tech-dot" style="background:var(--teal)"></div>Rate Limiting
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── CTA ──────────────────────────────────────────────────── -->
+    <div class="cta-section">
+        <div class="container">
+            <h2>Structured Simulations. Actionable Results.</h2>
+            <p>From first campaign to final report — everything in one platform built for security professionals.</p>
+            <a href="#features" class="btn-cta-white">
+                Explore the Platform
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- ── Footer ──────────────────────────────────────────────── -->
+    <footer>
+        <div class="container">
+            <p>© 2026 Noob Solutions · <a href="https://github.com/noobsolutions-2026">GitHub</a></p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
