@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Project Management Application — a secure, role-based platform for cybersecurity assessment teams, built with Node.js, AWS, and Microsoft Entra ID.">
+        content="Project Management Application — a secure, role-based platform for cybersecurity assessment teams, built with Node.js, AWS, and Microsoft Entra ID. Includes a REST API and a remote MCP server for AI-client integration.">
     <title>SecurePM — Project Management Application</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -671,6 +671,139 @@
             transform: translateY(-1px);
         }
 
+        /* ── API & MCP section ──────────────────────────────────── */
+        .api-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .api-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .api-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--teal);
+            border-radius: 8px;
+            padding: 16px 18px;
+            transition: box-shadow .2s, transform .2s;
+        }
+
+        .api-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, .07);
+            transform: translateX(3px);
+        }
+
+        .api-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .api-card p {
+            font-size: 12.5px;
+            color: var(--slate);
+            line-height: 1.55;
+        }
+
+        .api-card code {
+            font-family: monospace;
+            font-size: 11px;
+            background: rgba(15, 30, 61, .06);
+            padding: 1px 5px;
+            border-radius: 3px;
+            color: var(--navy);
+        }
+
+        .tool-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .tool-pill {
+            font-size: 11px;
+            font-weight: 600;
+            font-family: monospace;
+            padding: 3px 9px;
+            border-radius: 5px;
+            background: rgba(13, 148, 136, .1);
+            color: var(--teal);
+            border: 1px solid rgba(13, 148, 136, .2);
+        }
+
+        .tool-pill.write {
+            background: rgba(139, 92, 246, .1);
+            color: #7C3AED;
+            border-color: rgba(139, 92, 246, .25);
+        }
+
+        /* code / terminal window */
+        .code-win {
+            background: #0b1220;
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 10px;
+            overflow: hidden;
+            position: sticky;
+            top: 74px;
+        }
+
+        .code-win-bar {
+            background: rgba(255, 255, 255, .06);
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            padding: 9px 13px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .code-win-title {
+            font-size: 11px;
+            color: rgba(255, 255, 255, .4);
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        .code-win-body {
+            padding: 14px 16px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+            font-size: 11.5px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, .8);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .code-prompt {
+            color: var(--teal-b);
+        }
+
+        .code-flag {
+            color: #93C5FD;
+        }
+
+        .code-str {
+            color: #FCD34D;
+        }
+
+        .code-ok {
+            color: var(--green);
+        }
+
+        .code-comment {
+            color: rgba(255, 255, 255, .35);
+        }
+
         /* ── CTA section ────────────────────────────────────────── */
         .cta-section {
             background: linear-gradient(135deg, var(--teal) 0%, #0D5C73 100%);
@@ -911,6 +1044,14 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
+
+            .api-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .code-win {
+                position: static;
+            }
         }
 
         @media (max-width: 600px) {
@@ -946,6 +1087,7 @@
             <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
                 <li><a href="#roles">Roles</a></li>
+                <li><a href="#api-mcp">API &amp; MCP</a></li>
                 <li><a href="#tech-stack">Tech Stack</a></li>
                 <li><a href="#slack-reminders">Slack Reminders</a></li>
             </ul>
@@ -1122,6 +1264,20 @@
                     <p>Real-time event alerts on assignments, status changes, and completions — plus three <strong>scheduled reminders</strong> (weekly, monthly, quarterly) that surface unassigned, stale, and overdue work automatically.</p>
                 </div>
 
+                <div class="feat-card" style="border-color:rgba(139,92,246,.3);grid-column:span 3">
+                    <div
+                        style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#8B5CF6,#0D9488)">
+                    </div>
+                    <div style="display:flex;align-items:flex-start;gap:20px">
+                        <div class="feat-icon" style="background:rgba(139,92,246,.1);flex-shrink:0">🔌</div>
+                        <div>
+                            <h4 style="margin-bottom:6px">REST API &amp; MCP Server</h4>
+                            <p>Automate and integrate. A CSRF-protected REST API powers every screen, and a remote <strong>Model Context Protocol</strong> server lets AI clients like Claude Desktop and Claude Code act on your behalf — authenticated with per-user tokens and bound by the same role-based access (scoped <code style="font-size:11px;background:rgba(139,92,246,.1);padding:1px 4px;border-radius:3px;font-family:monospace">read</code> or <code style="font-size:11px;background:rgba(139,92,246,.1);padding:1px 4px;border-radius:3px;font-family:monospace">read-write</code>).</p>
+                            <a href="#api-mcp" style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:12px;font-weight:700;color:var(--purple);text-decoration:none">Explore API &amp; MCP →</a>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="feat-card" style="border-color:rgba(249,115,22,.3);grid-column:span 3">
                     <div
                         style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#F97316,#F59E0B)">
@@ -1254,6 +1410,9 @@
                     <div class="tech-dot" style="background:#611f69"></div>Slack API
                 </div>
                 <div class="tech-pill">
+                    <div class="tech-dot" style="background:var(--purple)"></div>Model Context Protocol (MCP)
+                </div>
+                <div class="tech-pill">
                     <div class="tech-dot" style="background:var(--teal)"></div>Quill Editor
                 </div>
                 <div class="tech-pill">
@@ -1303,6 +1462,81 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── API & MCP Integration ─────────────────────────────────── -->
+    <section id="api-mcp" style="background:var(--off-wh)">
+        <div class="container">
+            <div class="s-head">
+                <p class="s-tag" style="color:var(--purple)">Programmatic Access</p>
+                <h2 class="s-title">API &amp; MCP Integration</h2>
+                <p class="s-sub">Bring SecurePM into your own tooling and AI assistants. A REST API backs every
+                    screen, and a remote <strong>MCP server</strong> lets AI clients act on your behalf — always
+                    within your role's permissions.</p>
+            </div>
+
+            <div class="api-grid">
+                <div class="api-cards">
+
+                    <div class="api-card" style="border-left-color:var(--purple)">
+                        <h4>🔌 MCP Server (Model Context Protocol)</h4>
+                        <p>Connect Claude Desktop, Claude Code, or any MCP client over Streamable HTTP at
+                            <code>POST /mcp</code>. The client authenticates with a per-user Bearer token and acts as
+                            that user — no shared service account.</p>
+                    </div>
+
+                    <div class="api-card">
+                        <h4>🔑 Scoped Tokens &amp; RBAC</h4>
+                        <p>Generate <code>read</code> or <code>read-write</code> tokens from your Profile. Tokens are
+                            SHA-256 hashed at rest, shown once, and revocable. Every call re-checks the live user, so the
+                            same access rules as the web app apply — Delivery never sees revenue, and writes require
+                            assignment membership.</p>
+                    </div>
+
+                    <div class="api-card">
+                        <h4>🧰 MCP Tools</h4>
+                        <p>Five read tools and two write tools mirror the platform's core operations:</p>
+                        <div class="tool-pills">
+                            <span class="tool-pill">search_projects</span>
+                            <span class="tool-pill">get_project</span>
+                            <span class="tool-pill">list_my_active_assessments</span>
+                            <span class="tool-pill">get_dashboard_stats</span>
+                            <span class="tool-pill">get_assessment_remarks</span>
+                            <span class="tool-pill write">add_assessment_remark</span>
+                            <span class="tool-pill write">update_assessment_status</span>
+                        </div>
+                    </div>
+
+                    <div class="api-card" style="border-left-color:var(--blue)">
+                        <h4>🌐 REST API</h4>
+                        <p>Every view is powered by CSRF-protected JSON endpoints under <code>/api/*</code> — dashboard
+                            stats, project &amp; assessment management, report generation, and admin — secured by
+                            Microsoft Entra ID sessions.</p>
+                    </div>
+
+                </div>
+
+                <!-- Terminal mockup: adding the MCP server -->
+                <div class="code-win">
+                    <div class="code-win-bar">
+                        <div class="mock-dot" style="background:#FF5F57"></div>
+                        <div class="mock-dot" style="background:#FEBC2E"></div>
+                        <div class="mock-dot" style="background:#28C840"></div>
+                        <span class="code-win-title">Terminal — connect an MCP client</span>
+                    </div>
+<div class="code-win-body"><span class="code-prompt">$</span> claude mcp add --transport http proj-mgmt \
+    https://app.stonecybersecurity.org/mcp \
+    <span class="code-flag">--header</span> <span class="code-str">"Authorization: Bearer pmcp_••••••••"</span>
+
+<span class="code-ok">✓</span> proj-mgmt connected <span class="code-comment">· 7 tools available</span>
+
+<span class="code-prompt">›</span> List my active assessments
+<span class="code-comment"># → runs list_my_active_assessments as you,
+#   scoped to your role &amp; assignments</span></div>
+                </div>
+
             </div>
         </div>
     </section>
