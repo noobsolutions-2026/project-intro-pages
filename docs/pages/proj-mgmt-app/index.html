@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Project Management Application — a secure, role-based platform for cybersecurity assessment teams, built with Node.js, AWS, and Microsoft Entra ID. Includes a REST API and a remote MCP server for AI-client integration.">
+        content="Project Management Application — a secure, role-based platform for cybersecurity assessment teams, built with Node.js, AWS, and Microsoft Entra ID. Word-style anchored report review with approve / request-changes sign-off, plus a REST API and a remote MCP server for AI-client integration.">
     <title>SecurePM — Project Management Application</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -992,6 +992,170 @@
             }
         }
 
+        /* ── Report Review showcase mockup ──────────────────────── */
+        .rv-mock {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(15, 30, 61, .08);
+            position: sticky;
+            top: 74px;
+        }
+
+        .rv-doc {
+            padding: 15px 16px;
+            font-size: 12.5px;
+            line-height: 1.7;
+            color: var(--navy);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .rv-hl {
+            background: rgba(255, 213, 0, .32);
+            box-shadow: 0 0 0 1px rgba(255, 193, 7, .55);
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+
+        .rv-pin {
+            font-size: 9px;
+            vertical-align: super;
+            margin-left: 1px;
+        }
+
+        .rv-drawer {
+            background: var(--off-wh);
+            padding: 13px;
+        }
+
+        .rv-drawer-hdr {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .rv-drawer-hdr strong {
+            font-size: 12px;
+            color: var(--navy);
+        }
+
+        .rv-count {
+            font-size: 9.5px;
+            font-weight: 700;
+            color: var(--slate);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 2px 8px;
+        }
+
+        .rv-thread {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 11px;
+            margin-bottom: 8px;
+        }
+
+        .rv-thread:last-child {
+            margin-bottom: 0;
+        }
+
+        .rv-thread-top {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 7px;
+        }
+
+        .rv-tag {
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .rv-tag.anchored {
+            background: rgba(245, 158, 11, .14);
+            color: #92400E;
+        }
+
+        .rv-tag.general {
+            background: rgba(59, 130, 246, .12);
+            color: #1D4ED8;
+        }
+
+        .rv-snip {
+            font-size: 10.5px;
+            color: var(--slate-l);
+            font-style: italic;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .rv-msg {
+            font-size: 11.5px;
+            color: var(--slate);
+            line-height: 1.5;
+            margin-bottom: 5px;
+        }
+
+        .rv-msg b,
+        .rv-reply b {
+            color: var(--navy);
+        }
+
+        .rv-reply {
+            font-size: 11px;
+            color: var(--slate);
+            background: var(--card-bg);
+            border-radius: 6px;
+            padding: 6px 8px;
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        .rv-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .rv-btn {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid;
+        }
+
+        .rv-btn.approve {
+            background: rgba(16, 185, 129, .1);
+            color: #047857;
+            border-color: rgba(16, 185, 129, .3);
+        }
+
+        .rv-btn.changes {
+            background: rgba(245, 158, 11, .1);
+            color: #B45309;
+            border-color: rgba(245, 158, 11, .3);
+        }
+
+        .rv-btn.ghost {
+            background: var(--white);
+            color: var(--slate);
+            border-color: var(--border);
+        }
+
+        @media (max-width: 900px) {
+            .rv-mock {
+                position: static;
+            }
+        }
+
         /* ── Footer ─────────────────────────────────────────────── */
         footer {
             background: var(--navy);
@@ -1087,6 +1251,7 @@
             <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
                 <li><a href="#roles">Roles</a></li>
+                <li><a href="#review">Review</a></li>
                 <li><a href="#api-mcp">API &amp; MCP</a></li>
                 <li><a href="#tech-stack">Tech Stack</a></li>
                 <li><a href="#slack-reminders">Slack Reminders</a></li>
@@ -1292,6 +1457,20 @@
                     </div>
                 </div>
 
+                <div class="feat-card" style="border-color:rgba(13,148,136,.3);grid-column:span 3">
+                    <div
+                        style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#0D9488,#3B82F6)">
+                    </div>
+                    <div style="display:flex;align-items:flex-start;gap:20px">
+                        <div class="feat-icon" style="background:rgba(13,148,136,.1);flex-shrink:0">💬</div>
+                        <div>
+                            <h4 style="margin-bottom:6px">Report Review &amp; Sign-off</h4>
+                            <p>Review reports the way you review a shared doc. Highlight the exact text and pin a comment to it (<strong>📌 anchored</strong>), or leave a <strong>📝 general note</strong>. Author and reviewer reply in threads and resolve them, then the reviewer <strong>approves</strong> or <strong>requests changes</strong> — all inside the editor, with Slack notifying the reviewer. Review is optional and never blocks delivery.</p>
+                            <a href="#review" style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:12px;font-weight:700;color:var(--teal);text-decoration:none">See how review works →</a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -1462,6 +1641,96 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Report Review & Sign-off ──────────────────────────────── -->
+    <section id="review" style="background:var(--white)">
+        <div class="container">
+            <div class="s-head">
+                <p class="s-tag">Collaborative Review</p>
+                <h2 class="s-title">Report Review &amp; Sign-off</h2>
+                <p class="s-sub">Review reports like a shared document — pin comments to the exact words they're
+                    about, talk it through in threads, and approve or request changes without ever leaving the editor.</p>
+            </div>
+
+            <div class="api-grid">
+                <div class="api-cards">
+
+                    <div class="api-card">
+                        <h4>📌 Anchored comments</h4>
+                        <p>Select the exact text and pin a note to it — the comment is tied to the words it's about, and
+                            one click jumps straight to the highlight. No more "para 3, second sentence".</p>
+                    </div>
+
+                    <div class="api-card" style="border-left-color:var(--blue)">
+                        <h4>📝 General notes</h4>
+                        <p>Whole-report feedback that isn't tied to a single spot sits alongside the anchored ones,
+                            clearly tagged so nothing slips through.</p>
+                    </div>
+
+                    <div class="api-card" style="border-left-color:var(--purple)">
+                        <h4>💬 Threaded conversations</h4>
+                        <p>Author and reviewer reply back and forth on each comment, then resolve or withdraw the thread
+                            once it's settled. Header counts show what's still open and what's awaiting your reply.</p>
+                    </div>
+
+                    <div class="api-card" style="border-left-color:var(--green)">
+                        <h4>✅ Approve or request changes</h4>
+                        <p>The reviewer signs off or sends it back, with status badges — <em>Pending review</em>,
+                            <em>Changes requested</em>, <em>Approved</em> — and a flag if an approved report is edited
+                            again. Slack notifies the reviewer on submit. Review is optional; it never blocks delivery.</p>
+                    </div>
+
+                </div>
+
+                <!-- Editor + review drawer mockup -->
+                <div class="rv-mock">
+                    <div class="code-win-bar" style="background:var(--card-bg);border-color:var(--border)">
+                        <div class="mock-dot" style="background:#FF5F57"></div>
+                        <div class="mock-dot" style="background:#FEBC2E"></div>
+                        <div class="mock-dot" style="background:#28C840"></div>
+                        <span class="code-win-title" style="color:var(--slate)">Report editor — review mode</span>
+                    </div>
+                    <div class="rv-doc">
+                        The admin portal accepts <span class="rv-hl">default credentials<span
+                                class="rv-pin">📌</span></span> in production, allowing trivial unauthorized access to
+                        the management console…
+                    </div>
+                    <div class="rv-drawer">
+                        <div class="rv-drawer-hdr">
+                            <strong>Review</strong>
+                            <span class="rv-count">🟡 2 open · ✋ 1 awaiting you</span>
+                        </div>
+
+                        <div class="rv-thread">
+                            <div class="rv-thread-top">
+                                <span class="rv-tag anchored">📌 anchored</span>
+                                <span class="rv-snip">"default credentials"</span>
+                            </div>
+                            <div class="rv-msg"><b>Reviewer</b> — Name the affected endpoint and cite the request.</div>
+                            <div class="rv-reply"><b>Author</b> — Added the path + PoC request. ✅</div>
+                            <div class="rv-actions">
+                                <span class="rv-btn approve">Resolve</span>
+                                <span class="rv-btn ghost">Reply</span>
+                            </div>
+                        </div>
+
+                        <div class="rv-thread">
+                            <div class="rv-thread-top">
+                                <span class="rv-tag general">📝 general</span>
+                                <span class="rv-snip">Whole report</span>
+                            </div>
+                            <div class="rv-msg"><b>Reviewer</b> — Tighten the executive summary before sign-off.</div>
+                            <div class="rv-actions">
+                                <span class="rv-btn approve">✓ Approve</span>
+                                <span class="rv-btn changes">⤺ Request changes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
